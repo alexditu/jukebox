@@ -1,0 +1,10 @@
+Tools:
+	Eclipse Mars version
+	Glassfish 4.1.1
+
+
+Test:
+
+	curl -X POST -k -H "Content-Type: application/json" --data @body.json http://localhost:8080/juke/rest/test4 --trace-ascii /dev/stdout
+
+	curl -X POST -kv -d "p=123" http://localhost:8080/juke/rest/test3
