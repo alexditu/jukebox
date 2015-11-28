@@ -8,7 +8,7 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>sac.juke.RestApplication</servlet-name>
-        <url-pattern>/*</url-pattern>
+        <url-pattern>/j/*</url-pattern>
     </servlet-mapping>
    
     <!--
