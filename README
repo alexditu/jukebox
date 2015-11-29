@@ -46,6 +46,17 @@ curl -X POST -k -H "Content-Type: application/json" --data @body.json http://loc
 # send www-form-urlencoded (POST) params
 curl -X POST -kv -d "p=123" http://localhost:8080/juke/j/rest/test3
 
+# getTime
+curl -X POST -kv http://localhost:8080/juke/j/rest/getTime
+{"seekTime":27}
+
+# getSong -- returns current song info
+curl -X POST -kv http://localhost:8080/juke/j/rest/getSong
+
+
+
+
+
 
 Log4j2:
 	File appender example:

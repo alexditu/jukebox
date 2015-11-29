@@ -25,6 +25,7 @@ import org.apache.logging.log4j.Logger;
 import org.quartz.Scheduler;
 
 import sac.juke.model.GlobalData;
+import sac.juke.model.Song;
 import sac.juke.model.User;
 import sac.juke.timer.SongScheduler;
 import sac.juke.util.Constants;
@@ -42,6 +43,17 @@ public class JukeboxREST {
     }
     
     @POST
+    @Path("getSong")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.WILDCARD)
+    public JsonObject getSong() {
+    	Song song = GlobalData.getCurrentSong();
+    	JsonObject json = song.toJson();
+    	log.debug("getSong: " + json);
+    	return json;
+    }
+    
+    @POST
     @Path("getTime")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.WILDCARD)
@@ -53,7 +65,7 @@ public class JukeboxREST {
     	
     	JsonObjectBuilder ret = Json.createObjectBuilder();
     	ret.add("seekTime", seekTime);
-    	log.debug("Seek time is: " + seekTime);
+    	log.debug("getTime: " + seekTime);
     	
     	return ret.build();
     }
