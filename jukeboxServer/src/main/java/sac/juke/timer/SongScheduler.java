@@ -38,12 +38,12 @@ public class SongScheduler {
             // and start it off
             scheduler.start();
             
-            // trebuie aleasa cumva prima melodie
+            //TODO: trebuie aleasa cumva prima melodie
             String firstSongId = "ZtFUX4Y2U84";
             SongList songList = (SongList)context.getAttribute(Constants.SONGLIST);
             Song firstSong = songList.getSong(firstSongId);
              
-            Date triggerTime = DateBuilder.futureDate(11 /*firstSong.getDuration()*/, IntervalUnit.SECOND);
+            Date triggerTime = DateBuilder.futureDate(firstSong.getDuration(), IntervalUnit.SECOND);
             
             JobDataMap data = new JobDataMap();
             data.put("triggerTime", triggerTime);

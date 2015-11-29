@@ -1,5 +1,9 @@
 package sac.juke.model;
 
+import javax.json.Json;
+import javax.json.JsonObject;
+import javax.json.JsonObjectBuilder;
+
 /**
  * Retine informatiile despre un cantec
  * @author alex
@@ -77,5 +81,20 @@ public class Song {
 
 	public void setVotes(int votes) {
 		this.votes = votes;
+	}
+	
+//	private String id;		// id-ul melodiei, recunoscut de youtube
+//	private int duration;	// durata in secunde
+//	private int votes;		// numarul de voturi
+//	private String name;
+//	private String singer;
+	public JsonObject toJson() {
+		JsonObjectBuilder builder = Json.createObjectBuilder();
+		builder .add("id", id)
+				.add("duration", duration)
+				.add("votes", votes)
+				.add("name", name)
+				.add("singer", singer);
+		return builder.build();
 	}
 }
