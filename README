@@ -2,26 +2,49 @@ Tools:
 	Eclipse Mars version
 	Glassfish 4.1.1
 
+--------------------------------------------------------------------------------
 Glassfish 4.1.1:
+--------------------------------------------------------------------------------
 	- unzip server: /opt/glassfish4
 	- asadmin script location: /opt/glassfish4/glassfish/asadmin (add it to path)
-	- enable secure admin:
+	- intial commands:
+		asadmin start-domain
+		asadmin change-admin-password
 		asadmin --host localhost --port 4848 enable-secure-admin
+		asadmin set server.admin-service.das-config.admin-session-timeout-in-minutes=120
+ 
 	- useful commands:
 		asadmin start-domain
 		asadmin stop-domain
 		asadmin restart-domain
 		asadmin list-applications
 
+	- deploy to server:
+		1. Create passfile with content:
+			 S_ADMIN_PASSWORD=weblogic1
+
+			echo "S_ADMIN_PASSWORD=weblogic1" > /opt/glassfish4/passfile
+
+		2. Deploy to server:
+		asadmin --user admin \
+				--passwordfile /opt/glassfish4/passfile deploy \
+				--contextroot <ctx-root> \
+				--force=true --name <appName> --target server <war-location>
 
 
 
 
-Test:
+--------------------------------------------------------------------------------
+Test WebServices using curl:
+--------------------------------------------------------------------------------
+location: 	http://localhost:8080/juke/j/rest/<serviceName>
+wadl:		http://localhost:8080/juke/j/application.wadl[?detail=true]
 
-	curl -X POST -k -H "Content-Type: application/json" --data @body.json http://localhost:8080/juke/rest/test4 --trace-ascii /dev/stdout
+# send json data + show transfered data
+curl -X POST -k -H "Content-Type: application/json" --data @body.json http://localhost:8080/juke/j/rest/test4 --trace-ascii /dev/stdout
 
-	curl -X POST -kv -d "p=123" http://localhost:8080/juke/rest/test3
+# send www-form-urlencoded (POST) params
+curl -X POST -kv -d "p=123" http://localhost:8080/juke/j/rest/test3
 
 
 Log4j2:
