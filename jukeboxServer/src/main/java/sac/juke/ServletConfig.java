@@ -11,7 +11,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.quartz.Scheduler;
 
-import sac.juke.model.Manager;
+import sac.juke.model.GlobalData;
 import sac.juke.model.SongList;
 import sac.juke.model.User;
 import sac.juke.timer.SongScheduler;
@@ -33,7 +33,7 @@ public class ServletConfig implements ServletContextListener {
 		SongList songList = new SongList();
 		songList.addDefaultSongs();
 		context.setAttribute(Constants.SONGLIST, songList);
-		Manager.songs = songList;
+		GlobalData.songs = songList;
 
 		/* init scheduler */
 		SongScheduler songSched = new SongScheduler();

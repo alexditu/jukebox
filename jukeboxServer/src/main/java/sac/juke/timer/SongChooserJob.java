@@ -19,6 +19,7 @@ import org.quartz.SchedulerException;
 import org.quartz.Trigger;
 import org.quartz.TriggerBuilder;
 
+import sac.juke.model.GlobalData;
 import sac.juke.model.SongList;
 import sac.juke.util.Constants;
 
@@ -28,18 +29,23 @@ public class SongChooserJob implements Job {
 	private final static Logger log = LogManager.getLogger(SongChooserJob.class);
 	
 	@Override
-	public void execute(JobExecutionContext jobContext) throws JobExecutionException {
+	public void execute(JobExecutionContext jobContext) {
+		
+
 		log.debug("Computing next song");
 		
-		String nextSongId = "";
-		JobDataMap dataMap = jobContext.getMergedJobDataMap();
+		String nextSongId = "ZtFUX4Y2U84";
+		JobDataMap dataMap = jobContext.getJobDetail().getJobDataMap();
 		ServletContext servletContext = (ServletContext)dataMap.get("servletContext");
-		SongList songList = (SongList) servletContext.getAttribute(Constants.SONGLIST);
+		SongList songList = GlobalData.songs; //(SongList) servletContext.getAttribute(Constants.SONGLIST);
 		
 		int duration = songList.getSong(nextSongId).getDuration();
-		Date triggerTime = updateTrigger(jobContext.getScheduler(), duration);
-		dataMap.put("triggerTime", triggerTime);
 		
+		log.debug("Before updateTrigger");
+		Date triggerTime = updateTrigger(jobContext.getScheduler(), duration);
+		log.debug("After updateTrigger");
+		dataMap.put("triggerTime", triggerTime);
+
 	}
 	
 	public Date updateTrigger(Scheduler sched, int duration) {

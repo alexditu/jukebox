@@ -24,7 +24,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.quartz.Scheduler;
 
-import sac.juke.model.Manager;
+import sac.juke.model.GlobalData;
 import sac.juke.model.User;
 import sac.juke.timer.SongScheduler;
 import sac.juke.util.Constants;
@@ -48,7 +48,7 @@ public class JukeboxREST {
     public JsonObject getTime() {
     	Scheduler sched = (Scheduler) servletContext.getAttribute(Constants.SCHEDULER);
     	int remainingTime = SongScheduler.getElapsedTime(sched);
-    	int duration = Manager.songs.getSong(Manager.currentSong).getDuration();
+    	int duration = GlobalData.songs.getSong(GlobalData.currentSong).getDuration();
     	int seekTime = (duration - remainingTime);
     	
     	JsonObjectBuilder ret = Json.createObjectBuilder();
