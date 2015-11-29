@@ -8,3 +8,17 @@ Test:
 	curl -X POST -k -H "Content-Type: application/json" --data @body.json http://localhost:8080/juke/rest/test4 --trace-ascii /dev/stdout
 
 	curl -X POST -kv -d "p=123" http://localhost:8080/juke/rest/test3
+
+
+Log4j2:
+	File appender example:
+	
+	<Appenders>
+		<!-- Glassfish default location is: glassfish/domains/domain1/config/logs/app.log -->
+		<!-- ${com.sun.aas.instanceRoot}/logs/MyApplication.log -->
+		<File name="MyFile" fileName="logs/app.log"> 
+			<PatternLayout>
+				<Pattern>%d [%p] %c{1.} - %m%n</Pattern>
+			</PatternLayout>
+		</File>
+	</Appenders>
