@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>Collaborative Jukebox</title>
+
+    <link rel="import" href="template.html">
+
+    <!-- Bootstrap -->
+    <link href="bootstrap-3.3.6-dist/css/bootstrap.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body role="document">
+
+    <nav class="navbar navbar-inverse">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">Collaborative Jukebox</a>
+        </div>
+
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
+          <ul class="nav navbar-nav">
+            <li><a href="#">About</a></li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Genres<span class="caret"></span></a>
+              <ul class="dropdown-menu" role="menu">
+                <li><a href="#">Pop</a></li>
+                <li><a href="#">Rock</a></li>
+                <li><a href="#">Jazz</a></li>
+                <li><a href="#">Blues</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav> <!-- End of NavBar -->
+
+    <!-- Start of content -->
+    <div class="row">
+      <div class="col-lg-9"/>
+        <ul class="nav nav-tabs">
+          <li class="active"><a href="#recent" data-toggle="tab" aria-expanded="true">Most Recent</a></li>
+          <li class=""><a href="#trending" data-toggle="tab" aria-expanded="false">Trending</a></li>
+          <li class=""><a href="#all" data-toggle="tab" aria-expanded="false">All</a></li>
+        </ul>
+        <div id="myTabContent" class="tab-content">
+          <div class="tab-pane fade active in" id="recent">
+            <script>
+              var link = document.querySelector('link[rel="import"]');
+
+              // Clone the <template> in the import.
+              var template = link.import.querySelector('template');
+              var clone = document.importNode(template.content, true);
+
+              document.querySelector('#recent').appendChild(clone);
+            </script>
+          </div>
+          <div class="tab-pane fade" id="trending">
+            <script>
+              var link = document.querySelector('link[rel="import"]');
+
+              // Clone the <template> in the import.
+              var template = link.import.querySelector('template');
+              var clone = document.importNode(template.content, true);
+
+              document.querySelector('#trending').appendChild(clone);
+            </script>
+          </div>
+          <div class="tab-pane fade" id="all">
+            <script>
+              var link = document.querySelector('link[rel="import"]');
+
+              // Clone the <template> in the import.
+              var template = link.import.querySelector('template');
+              var clone = document.importNode(template.content, true);
+
+              document.querySelector('#all').appendChild(clone);
+            </script>
+          </div>
+        </div>
+
+        <div class="alert alert-dismissible alert-warning">
+          <p>Now Playing: Adele</p>
+        </div>
+      </div>
+      <div class="col-lg-3">
+        <div class="alert alert-dismissible alert-warning" style="margin-bottom:0px;">Online Users</div>
+        <ul class="list-group" style="margin-top:0px">
+          <a href="#" class="list-group-item">John</a>
+          <a href="#" class="list-group-item">Katie</a>
+          <a href="#" class="list-group-item">Sasha</a>
+          <a href="#" class="list-group-item">Sean</a>
+          <a href="#" class="list-group-item">John</a>
+          <a href="#" class="list-group-item">Katie</a>
+          <a href="#" class="list-group-item">Sasha</a>
+          <a href="#" class="list-group-item">Sean</a>
+          <a href="#" class="list-group-item">John</a>
+          <a href="#" class="list-group-item">Katie</a>
+          <a href="#" class="list-group-item">Sasha</a>
+          <a href="#" class="list-group-item">Sean</a>
+          <a href="#" class="list-group-item">John</a>
+          <a href="#" class="list-group-item">Katie</a>
+          <a href="#" class="list-group-item">Sasha</a>
+          <a href="#" class="list-group-item">John</a>
+          <a href="#" class="list-group-item">Katie</a>
+          <a href="#" class="list-group-item">Sasha</a>
+          <a href="#" class="list-group-item">Sean</a>
+          <a href="#" class="list-group-item">John</a>
+          <a href="#" class="list-group-item">Katie</a>
+          <a href="#" class="list-group-item">Sasha</a>
+          <a href="#" class="list-group-item">Sean</a>
+          <a href="#" class="list-group-item">John</a>
+          <a href="#" class="list-group-item">Katie</a>
+          <a href="#" class="list-group-item">Sasha</a>
+          <a href="#" class="list-group-item">Sean</a>
+          <a href="#" class="list-group-item">John</a>
+          <a href="#" class="list-group-item">Katie</a>
+          <a href="#" class="list-group-item">Sasha</a>
+        </ul>
+      </div><!-- /.col-lg-6 -->
+    </div><!-- /.row -->
+
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="bootstrap-3.3.6-dist/js/bootstrap.min.js"></script>
+  </body>
+
+</html>

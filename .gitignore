@@ -2,3 +2,4 @@ target/
 *.class
 *.war
 *.jar
+*.sh
