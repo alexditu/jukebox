@@ -2,6 +2,20 @@ Tools:
 	Eclipse Mars version
 	Glassfish 4.1.1
 
+Glassfish 4.1.1:
+	- unzip server: /opt/glassfish4
+	- asadmin script location: /opt/glassfish4/glassfish/asadmin (add it to path)
+	- enable secure admin:
+		asadmin --host localhost --port 4848 enable-secure-admin
+	- useful commands:
+		asadmin start-domain
+		asadmin stop-domain
+		asadmin restart-domain
+		asadmin list-applications
+
+
+
+
 
 Test:
 
