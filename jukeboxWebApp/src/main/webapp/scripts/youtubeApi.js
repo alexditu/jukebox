@@ -35,7 +35,7 @@ function doPostJson(methodName, data, succesCallBack) {
 }
 
 function doPost(methodName, dataMap, succesCallBack) {
-    console.log('doPost');
+    //console.log('doPost');
     var data = '';
     
     //for (var [key, value] of dataMap.entries()) {
@@ -49,7 +49,7 @@ function doPost(methodName, dataMap, succesCallBack) {
 		}
 	    data = data.substring(0, data.length - 1);
     }
-    console.log('data: ' + data);
+    //console.log('data: ' + data);
     
     $.ajax({
 	  url:'/juke/j/rest/' + methodName,

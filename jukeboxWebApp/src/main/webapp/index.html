@@ -64,39 +64,9 @@
           <li class=""><a href="#all" data-toggle="tab" aria-expanded="false">All</a></li>
         </ul>
         <div id="myTabContent" class="tab-content">
-          <div class="tab-pane fade active in" id="recent">
-            <script>
-              var link = document.querySelector('link[rel="import"]');
-
-              // Clone the <template> in the import.
-              var template = link.import.querySelector('template');
-              var clone = document.importNode(template.content, true);
-
-              document.querySelector('#recent').appendChild(clone);
-            </script>
-          </div>
-          <div class="tab-pane fade" id="trending">
-            <script>
-              var link = document.querySelector('link[rel="import"]');
-
-              // Clone the <template> in the import.
-              var template = link.import.querySelector('template');
-              var clone = document.importNode(template.content, true);
-
-              document.querySelector('#trending').appendChild(clone);
-            </script>
-          </div>
-          <div class="tab-pane fade" id="all">
-            <script>
-              var link = document.querySelector('link[rel="import"]');
-
-              // Clone the <template> in the import.
-              var template = link.import.querySelector('template');
-              var clone = document.importNode(template.content, true);
-
-              document.querySelector('#all').appendChild(clone);
-            </script>
-          </div>
+          <div class="tab-pane fade active in" id="recent"></div>
+          <div class="tab-pane fade" id="trending"></div>
+          <div class="tab-pane fade" id="all"></div>
         </div>
 
         <div class="alert alert-dismissible alert-warning">
@@ -114,6 +84,8 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="bootstrap-3.3.6-dist/js/bootstrap.min.js"></script>
+    <script src="scripts/mustache.js"></script>
+    <script src="scripts/youtubeApi.js"></script>
     <script src="scripts/index.js"></script>
   </body>
 
