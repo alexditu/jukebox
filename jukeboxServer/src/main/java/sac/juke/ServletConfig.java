@@ -1,7 +1,5 @@
 package sac.juke;
 
-import java.util.ArrayList;
-
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
@@ -12,8 +10,6 @@ import org.apache.logging.log4j.Logger;
 import org.quartz.Scheduler;
 
 import sac.juke.model.GlobalData;
-import sac.juke.model.Songs;
-import sac.juke.model.User;
 import sac.juke.timer.SongScheduler;
 import sac.juke.util.Constants;
 

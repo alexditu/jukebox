@@ -16,9 +16,9 @@ function callRestErrorHandler(jqXHR, textStatus, errorThrown) {
 	console.log('textStatus: ' + textStatus + ' errorThrown: ' + errorThrown);
 }
 
-function callRest(methodName, type, succesCallBack) {
-    console.log('aloha2');
-    var data = {name: "Donald Duck", city: "Duckburg"};
+function doPostJson(methodName, data, succesCallBack) {
+    console.log('doPostJson');
+//    var data = {name: "Donald Duck", city: "Duckburg"};
     
     $.ajax({
 	  url:'/juke/j/rest/' + methodName,
@@ -32,6 +32,41 @@ function callRest(methodName, type, succesCallBack) {
 	  
 	});
     
+}
+
+function doPost(methodName, dataMap, succesCallBack) {
+    console.log('doPost');
+    var data = '';
+    
+    for (var [key, value] of dataMap.entries()) {
+    	data += key + '=' + value + '&';
+    }
+    data = data.substring(0, data.length-1);
+    console.log('data: ' + data);
+    
+    $.ajax({
+	  url:'/juke/j/rest/' + methodName,
+	  type: 'POST',
+	  data: data,
+	  contentType:"application/x-www-form-urlencoded; charset=utf-8",
+	  dataType:"html",
+	  success: succesCallBack,
+	  error: callRestErrorHandler
+	  //, timeout: millis
+	  
+	});
+    
+}
+
+function getSongs() {
+	console.log('Get Songs:');
+	
+	var map = new Map();
+	map.set("username", "alex");
+	
+	doPost('getSongs', map, function(result, status, xhr) {
+		console.log('result: ' + result.toString() + ' status: ' + status);
+	});
 }
 
 
