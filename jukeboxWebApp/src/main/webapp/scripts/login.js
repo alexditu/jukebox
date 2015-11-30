@@ -1,26 +1,36 @@
 document.getElementById("loginButton").addEventListener("click", userLogin);
 
 $(document).ready(function(){
-   		console.log("Got a here");
 
    $("#userName").keyup(function(event){
-   		console.log("Got here");
-    	if(event.keyCode == 13){
-        	$("#loginButton").click();
-        	console.log("Got here");
-    	}
-	});
+        console.log("Got here");
+        if(event.keyCode == 13){
+            $("#loginButton").click();
+            console.log("Got here");
+        }
+    });
 });
 
+function addUser(username) {
+    var params = "username=" + username;
+
+    doPost('addUser', params, function(result, status, xhr) {
+        result = JSON.parse(result);
+
+        if (result.status == "EXISTS") {
+            window.alert("User already exists. Please choose a different username");
+        } else {
+            sessionStorage.setItem('username', name);
+            window.location.assign("/web/index.html");
+        }
+    });
+}
 
 function userLogin() {
     name = document.getElementById('userName').value;
     if (name.length == 0) {
-    	window.alert("Please provide a username");
+        window.alert("Please provide a username");
     } else {
-    	//trimit la alex 
-    	addUser(name);
-    	sessionStorage.setItem('username', name);
-    	window.location.assign("/web/index.html");
+        addUser(name);
     }
 }
