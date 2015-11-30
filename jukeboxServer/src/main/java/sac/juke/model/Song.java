@@ -17,6 +17,17 @@ public class Song {
 	private String name;
 	private String artist;
 	
+	/* used for MostRecent songs sort. It increases when a song ends */
+	private int age;
+	
+	public int getAge() {
+		return age;
+	}
+
+	public void setAge(int age) {
+		this.age = age;
+	}
+
 	public Song(String id, int duration, int score, String artist, String name) {
 		super();
 		this.id = id;
@@ -24,6 +35,7 @@ public class Song {
 		this.score = score;
 		this.name = name;
 		this.artist = artist;
+		this.age = 0;
 	}
 
 	public String getName() {
@@ -88,18 +100,8 @@ public class Song {
 		return id;
 	}
 	
-//	private String id;		// id-ul melodiei, recunoscut de youtube
-//	private int duration;	// durata in secunde
-//	private int score;		// numarul de voturi
-//	private String name;
-//	private String artist;
 	public JsonObject toJson() {
-		JsonObjectBuilder builder = Json.createObjectBuilder();
-		builder .add("id", id)
-				.add("duration", duration)
-				.add("score", score)
-				.add("name", name)
-				.add("artist", artist);
+		JsonObjectBuilder builder = toJsonBuilder();
 		return builder.build();
 	}
 	
@@ -113,7 +115,8 @@ public class Song {
 				.add("duration", duration)
 				.add("score", score)
 				.add("name", name)
-				.add("artist", artist);
+				.add("artist", artist)
+				.add("age", age);
 		return builder;
 	}
 }

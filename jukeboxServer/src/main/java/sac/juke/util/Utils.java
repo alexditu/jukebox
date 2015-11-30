@@ -35,4 +35,16 @@ public class Utils {
 		return ((GlobalData)ctx.getAttribute(Constants.DATA)).getCurrentSong();
 	}
 	
+	public static int getIter(ServletContext ctx) {
+		return ((GlobalData)ctx.getAttribute(Constants.DATA)).getIter();
+	}
+	
+	public static void incIter(ServletContext ctx) {
+		((GlobalData)ctx.getAttribute(Constants.DATA)).incIter();
+	}
+	
+	public static void setIter(ServletContext ctx, int iter) {
+		((GlobalData)ctx.getAttribute(Constants.DATA)).setIter(iter);
+	}
+	
 }

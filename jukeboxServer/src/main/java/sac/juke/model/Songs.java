@@ -1,7 +1,11 @@
 package sac.juke.model;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * TODO: generate songs from youtube or other source
@@ -9,10 +13,14 @@ import java.util.Set;
  *
  */
 public class Songs {
+	private final static Logger log = LogManager.getLogger(Songs.class);
+	
 	public HashMap<String, Song> songs;
+	private ArrayList<String> ids;
 	
 	public Songs() {
 		songs = new HashMap<>();
+		ids = new ArrayList<>();
 	}
 	
 	public Songs(boolean useDefaultSongs) {
@@ -26,6 +34,18 @@ public class Songs {
 		return songs.keySet();
 	}
 	
+	public Song getSongAt(int index) {
+		if (index > ids.size() - 1) {
+			log.error("Invalid index!!!");
+			return songs.get(ids.get(0));
+		}
+		return songs.get(ids.get(index));
+	}
+	
+	public int getTotalSongs() {
+		return ids.size();
+	}
+	
 	//TODO: remove synchronized if the list is readOnly
 	public synchronized Song getSong(String id) {
 		return songs.get(id);
@@ -33,6 +53,7 @@ public class Songs {
 	
 	public synchronized void  addSong(String id, Song song) {
 		songs.put(id, song);
+		ids.add(id);
 	}
 	
 	public void addDefaultSongs() {

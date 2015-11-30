@@ -63,8 +63,9 @@ public class JukeboxREST {
     	JsonObjectBuilder json = song.toJsonBuilder();
     	json.add("seekTime", seekTime);
     	
-    	log.debug("getSong: " + json);
-    	return json.build();
+    	JsonObject jSong = json.build();
+    	log.debug("getSong: " + jSong);
+    	return jSong;
     }
     
     @POST
