@@ -1,19 +1,37 @@
 package sac.juke.model;
 
 import java.util.HashMap;
+import java.util.Set;
 
-public class SongList {
+/**
+ * TODO: generate songs from youtube or other source
+ * @author alex
+ *
+ */
+public class Songs {
 	public HashMap<String, Song> songs;
 	
-	public SongList() {
+	public Songs() {
 		songs = new HashMap<>();
 	}
 	
-	public Song getSong(String id) {
+	public Songs(boolean useDefaultSongs) {
+		this();
+		if (useDefaultSongs == true) {
+			addDefaultSongs();
+		}
+	}
+	
+	public Set<String> getSongsKeySet() {
+		return songs.keySet();
+	}
+	
+	//TODO: remove synchronized if the list is readOnly
+	public synchronized Song getSong(String id) {
 		return songs.get(id);
 	}
 	
-	public void addSong(String id, Song song) {
+	public synchronized void  addSong(String id, Song song) {
 		songs.put(id, song);
 	}
 	

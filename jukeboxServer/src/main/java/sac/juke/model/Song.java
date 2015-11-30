@@ -13,17 +13,17 @@ public class Song {
 
 	private String id;		// id-ul melodiei, recunoscut de youtube
 	private int duration;	// durata in secunde
-	private int votes;		// numarul de voturi
+	private int score;		// numarul de voturi
 	private String name;
-	private String singer;
-
-	public Song(String id, int duration, int votes, String name, String singer) {
+	private String artist;
+	
+	public Song(String id, int duration, int score, String artist, String name) {
 		super();
 		this.id = id;
 		this.duration = duration;
-		this.votes = votes;
+		this.score = score;
 		this.name = name;
-		this.singer = singer;
+		this.artist = artist;
 	}
 
 	public String getName() {
@@ -34,12 +34,12 @@ public class Song {
 		this.name = name;
 	}
 
-	public String getSinger() {
-		return singer;
+	public String getArtist() {
+		return artist;
 	}
 
-	public void setSinger(String singer) {
-		this.singer = singer;
+	public void setArtist(String artist) {
+		this.artist = artist;
 	}
 
 	public Song() {
@@ -52,11 +52,11 @@ public class Song {
 		this.duration = duration;
 	}
 
-	public Song(String id, int duration, int votes) {
+	public Song(String id, int duration, int score) {
 		super();
 		this.id = id;
 		this.duration = duration;
-		this.votes = votes;
+		this.score = score;
 	}
 
 	public String getId() {
@@ -75,26 +75,40 @@ public class Song {
 		this.duration = duration;
 	}
 
-	public int getVotes() {
-		return votes;
+	public int getScore() {
+		return score;
 	}
 
-	public void setVotes(int votes) {
-		this.votes = votes;
+	public void setScore(int score) {
+		this.score = score;
 	}
 	
 //	private String id;		// id-ul melodiei, recunoscut de youtube
 //	private int duration;	// durata in secunde
-//	private int votes;		// numarul de voturi
+//	private int score;		// numarul de voturi
 //	private String name;
-//	private String singer;
+//	private String artist;
 	public JsonObject toJson() {
 		JsonObjectBuilder builder = Json.createObjectBuilder();
 		builder .add("id", id)
 				.add("duration", duration)
-				.add("votes", votes)
+				.add("score", score)
 				.add("name", name)
-				.add("singer", singer);
+				.add("artist", artist);
 		return builder.build();
+	}
+	
+	/**
+	 * Useful for adding extra info without altering the class
+	 * @return
+	 */
+	public JsonObjectBuilder toJsonBuilder() {
+		JsonObjectBuilder builder = Json.createObjectBuilder();
+		builder .add("id", id)
+				.add("duration", duration)
+				.add("score", score)
+				.add("name", name)
+				.add("artist", artist);
+		return builder;
 	}
 }

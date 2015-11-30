@@ -46,6 +46,7 @@ function getTime() {
 	console.log('Get Time:');
 	callRest('getTime', 'POST', function(result, status, xhr) {
 		console.log('result: ' + JSON.stringify(result) + ' status: ' + status);
+		console.log('seektime: ' + result.seekTime);
 		return result;
 	});
 	

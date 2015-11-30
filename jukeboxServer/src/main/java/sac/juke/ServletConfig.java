@@ -12,7 +12,7 @@ import org.apache.logging.log4j.Logger;
 import org.quartz.Scheduler;
 
 import sac.juke.model.GlobalData;
-import sac.juke.model.SongList;
+import sac.juke.model.Songs;
 import sac.juke.model.User;
 import sac.juke.timer.SongScheduler;
 import sac.juke.util.Constants;
@@ -22,19 +22,22 @@ public class ServletConfig implements ServletContextListener {
 	private static final Logger log = LogManager.getLogger(ServletConfig.class);
 	
 	public void contextInitialized(ServletContextEvent ev) {
-		log.debug("contextInitialized");
+		log.debug("Initializing servlet context");
 		ServletContext context = ev.getServletContext();
 		
 		/* init users */
-		ArrayList<User> users = new ArrayList<>();
-		context.setAttribute(Constants.USERS, users);
-		
-		/* init songs */
-		SongList songList = new SongList();
-		songList.addDefaultSongs();
-		context.setAttribute(Constants.SONGLIST, songList);
-		GlobalData.songs = songList;
+//		ArrayList<User> users = new ArrayList<>();
+//		context.setAttribute(Constants.USERS, users);
+//		
+//		SongList songList = new SongList();
+//		songList.addDefaultSongs();
+//		context.setAttribute(Constants.SONGLIST, songList);
+//		GlobalData.songs = songList;
 
+		/* init GlobalData */
+		GlobalData data = new GlobalData();
+		context.setAttribute(Constants.DATA, data);
+		
 		/* init scheduler */
 		SongScheduler songSched = new SongScheduler();
 		songSched.init(context);

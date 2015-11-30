@@ -1,14 +1,20 @@
 package sac.juke.model;
 
 public class GlobalData {
-	public static String currentSong = "ZtFUX4Y2U84";
-	public static SongList songs;
+	public String currentSong = "ZtFUX4Y2U84";
+	public Songs songs;
+	public Users users;
 	
-	public static synchronized Song getCurrentSong() {
+	public GlobalData() {
+		songs = new Songs(true);
+		users = new Users();
+	}
+	
+	public synchronized Song getCurrentSong() {
 		return songs.getSong(currentSong);
 	}
 	
-	public static synchronized void setCurrentSong(String id) {
+	public synchronized void setCurrentSong(String id) {
 		currentSong = id;
 	}
 }

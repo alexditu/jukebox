@@ -22,8 +22,9 @@ import org.quartz.TriggerBuilder;
 import org.quartz.impl.StdSchedulerFactory;
 
 import sac.juke.model.Song;
-import sac.juke.model.SongList;
+import sac.juke.model.Songs;
 import sac.juke.util.Constants;
+import sac.juke.util.Utils;
 
 public class SongScheduler {
 	
@@ -40,7 +41,8 @@ public class SongScheduler {
             
             //TODO: trebuie aleasa cumva prima melodie
             String firstSongId = "ZtFUX4Y2U84";
-            SongList songList = (SongList)context.getAttribute(Constants.SONGLIST);
+            
+            Songs songList = Utils.getSongs(context);
             Song firstSong = songList.getSong(firstSongId);
              
             Date triggerTime = DateBuilder.futureDate(firstSong.getDuration(), IntervalUnit.SECOND);
@@ -48,24 +50,21 @@ public class SongScheduler {
             JobDataMap data = new JobDataMap();
             data.put("triggerTime", triggerTime);
             data.put("servletContext", context);
-            // define the job and tie it to our HelloJob class
+
             JobDetail job = newJob(SongChooserJob.class)
                 .withIdentity("SongChooserJob", "G")
                 .usingJobData(data)
                 .build();
 
-            // Trigger the job to run now, and then repeat every 40 seconds
-            
             Trigger trigger = TriggerBuilder.newTrigger()
                 .withIdentity("SongChooserTrigger", "G")
                 .startAt(triggerTime)            
                 .build();
             
-            // Tell quartz to schedule the job using our trigger
             scheduler.scheduleJob(job, trigger);
+            log.debug("Scheduled job with init triggerTime: " + triggerTime);
             
             context.setAttribute(Constants.SCHEDULER, scheduler);
-
 
         } catch (SchedulerException se) {
             se.printStackTrace();

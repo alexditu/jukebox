@@ -1,13 +1,11 @@
 package sac.juke;
 
-import java.util.ArrayList;
-
 import javax.json.Json;
 import javax.json.JsonArray;
-import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
@@ -22,13 +20,12 @@ import javax.ws.rs.core.Response;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.quartz.Scheduler;
 
-import sac.juke.model.GlobalData;
+import sac.juke.exceptions.UserExistsException;
 import sac.juke.model.Song;
 import sac.juke.model.User;
-import sac.juke.timer.SongScheduler;
-import sac.juke.util.Constants;
+import sac.juke.model.Users;
+import sac.juke.util.Utils;
 
 @Path("rest")
 public class JukeboxREST {
@@ -38,16 +35,30 @@ public class JukeboxREST {
 	@Context
 	ServletContext servletContext;
 	
+	@Context
+	HttpServletResponse httpServletResponse;
+	
+	@Context
+	HttpServletRequest httpServletRequest;
+	
     public JukeboxREST() {
         super();
     }
     
     @POST
-    @Path("getSong")
+    @Path("getSongs")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.WILDCARD)
+    public JsonArray getSongs(@FormParam("username") String username) {
+    	return JukeboxLogic.getSongsForUser(servletContext, username);
+    }
+    
+    @POST
+    @Path("getSong")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     public JsonObject getSong() {
-    	Song song = GlobalData.getCurrentSong();
+    	Song song = Utils.getCurrentSong(servletContext);
     	JsonObject json = song.toJson();
     	log.debug("getSong: " + json);
     	return json;
@@ -58,10 +69,8 @@ public class JukeboxREST {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.WILDCARD)
     public JsonObject getTime() {
-    	Scheduler sched = (Scheduler) servletContext.getAttribute(Constants.SCHEDULER);
-    	int remainingTime = SongScheduler.getElapsedTime(sched);
-    	int duration = GlobalData.songs.getSong(GlobalData.currentSong).getDuration();
-    	int seekTime = (duration - remainingTime);
+
+    	int seekTime = JukeboxLogic.getSeekTime(servletContext);
     	
     	JsonObjectBuilder ret = Json.createObjectBuilder();
     	ret.add("seekTime", seekTime);
@@ -72,35 +81,37 @@ public class JukeboxREST {
     
     @POST
     @Path("addUser")
-    @Produces(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-    public String addUser(@FormParam("username") String username) {
+    public JsonObject addUser(@FormParam("username") String username) {
     	log.debug("username: " + username);
-    	ArrayList<User> users = (ArrayList<User>) servletContext.getAttribute(Constants.USERS);
+    	Users users = Utils.getUsers(servletContext);
     	
-    	users.add(new User(username));
-    	return "added user: " + username;
+    	JsonObjectBuilder b = Json.createObjectBuilder();
+    	try {
+    		users.add(username, new User(username));
+    		b.add("status", "OK");
+    	} catch (UserExistsException e) {
+    		log.debug("Users exists");
+    		b.add("status", "EXISTS");
+    	}
+    	return b.build(); 
     }
     
-    @GET
+    @POST
     @Path("getUsers")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.WILDCARD)
-    public JsonArray getUsers(@Context HttpServletResponse response) { 
-    	ArrayList<User> users = (ArrayList<User>) servletContext.getAttribute(Constants.USERS);
-    	log.debug("users: " + users.toString());
-    	
-    	ArrayList<String> ret = new ArrayList<>();
-    	JsonArrayBuilder jsonBuilder = Json.createArrayBuilder();
-    	
-    	for (User i : users) {
-    		jsonBuilder.add(i.toString());
-    	}
-    	
-    	response.addHeader("Access-Control-Allow-Origin", "*");
-    	return jsonBuilder.build();
+    public JsonArray getUsers() { 
+    	Users users = Utils.getUsers(servletContext);
+    	log.debug("users: " + users.toString());    	
+//    	response.addHeader("Access-Control-Allow-Origin", "*");
+    	return users.toJson();
     }
     
+    
+    
+    /* example methods for various HTTP methods/params/return values */
     @GET
     @Path("test1")
     @Produces("text/plain")
@@ -118,6 +129,7 @@ public class JukeboxREST {
         System.out.println("Got param: " + param);
         return param;
     }
+    
     
     @POST
     @Path("test4")
