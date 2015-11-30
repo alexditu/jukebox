@@ -11,11 +11,20 @@
   	<button id="bSong" onclick="getSong();">getSong</button>
   	<button id="bTime" onclick="getTime();">getTime</button>
   	<button id="bSongs" onclick="getSongs();">getSongs</button>
+  	<button id="bUsers" onclick="getUsers();">getUsers</button>
+  	<button id="test" onclick="test();">test</button>
   
     <!-- 1. The <iframe> (and video player) will replace this <div> tag. -->
     <div id="player" hidden></div>
 
     <script>
+    
+      function test() {
+    	  console.log('test:')
+    	  var song = getSong();
+    	  console.log('song: ' + song.toString());
+      }
+    
       // 2. This code loads the IFrame Player API code asynchronously.
       var tag = document.createElement('script');
 
@@ -45,13 +54,14 @@
       // 4. The API will call this function when the video player is ready.
       function onPlayerReady(event) {
         console.log('onPlayerReady');
-        var song = getSong();
-        
-        console.log('song: ' + song);
-        
-        player.mute();
-        player.loadVideoById(song);
-        event.target.playVideo();
+        doPost('getSong', new Map(),
+        	function(result, status, xhr) {
+	    		console.log('result: ' + result + ' status: ' + status);
+	    		player.mute();
+	            player.loadVideoById({'videoId': result.id,
+	            					  'startSeconds': result.seekTime});
+	            event.target.playVideo();
+        	});
       }
 
       // 5. The API calls this function when the player's state changes.
@@ -65,12 +75,14 @@
         }
 
         if (event.data == YT.PlayerState.ENDED) {
-            //alert('Song ended!');
-            player.loadVideoById({'videoId': 'YqeW9_5kURI',
-               'startSeconds': 5,
-               //'endSeconds': 60,
-               'suggestedQuality': 'large'});
-            player.playVideo();
+            doPost('getSong', new Map(),
+                	function(result, status, xhr) {
+        	    		console.log('result: ' + result + ' status: ' + status);
+        	    		player.mute();
+        	            player.loadVideoById({'videoId': result.id,
+        	            					  'startSeconds': result.seekTime});
+        	            player.playVideo();
+                	});
         }
         
       }
@@ -78,44 +90,44 @@
         player.stopVideo();
       }
 
-      function test() {
-
-        console.log('aloha2');
-        var data = {name: "Donald Duck", city: "Duckburg"};
-
-        console.log('data = ' + JSON.stringify(data));
-        
-        $.ajax({
-          url:'/juke/j/rest/test4',
-          type:"POST",
-          data:data,
-          contentType:"application/json; charset=utf-8",
-          dataType:"json",
-          success: function(){
-            console.log('SUCCESS');
-          }
-        });
-
-      }
-
-      function test2() {
-        console.log('aloha2');
-        var data = {name: "Donald Duck", city: "Duckburg"};
-        
-        $.ajax({
-            url:'http://localhost:8080/juke/j/rest/getUsers',
-            type:"POST",
-            data: JSON.stringify(data),
-            contentType:"application/json; charset=utf-8",
-            dataType:"json",
-            success: getUsersCallback
-          });
-      }
-
-      function getUsersCallback(result, status, xhr) {
-          console.log('result: ' + JSON.stringify(result) + ' status: ' + status);
-        
-      }
+//      function test() {
+//
+//        console.log('aloha2');
+//        var data = {name: "Donald Duck", city: "Duckburg"};
+//
+//        console.log('data = ' + JSON.stringify(data));
+//        
+//        $.ajax({
+//          url:'/juke/j/rest/test4',
+//          type:"POST",
+//          data:data,
+//          contentType:"application/json; charset=utf-8",
+//          dataType:"json",
+//          success: function(){
+//            console.log('SUCCESS');
+//          }
+//        });
+//
+//      }
+//
+//      function test2() {
+//        console.log('aloha2');
+//        var data = {name: "Donald Duck", city: "Duckburg"};
+//        
+//        $.ajax({
+//            url:'http://localhost:8080/juke/j/rest/getUsers',
+//            type:"POST",
+//            data: JSON.stringify(data),
+//            contentType:"application/json; charset=utf-8",
+//            dataType:"json",
+//            success: getUsersCallback
+//          });
+//      }
+//
+//      function getUsersCallback(result, status, xhr) {
+//          console.log('result: ' + JSON.stringify(result) + ' status: ' + status);
+//        
+//      }
 
     </script>
 

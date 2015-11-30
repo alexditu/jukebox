@@ -59,9 +59,12 @@ public class JukeboxREST {
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     public JsonObject getSong() {
     	Song song = Utils.getCurrentSong(servletContext);
-    	JsonObject json = song.toJson();
+    	int seekTime = JukeboxLogic.getSeekTime(servletContext);
+    	JsonObjectBuilder json = song.toJsonBuilder();
+    	json.add("seekTime", seekTime);
+    	
     	log.debug("getSong: " + json);
-    	return json;
+    	return json.build();
     }
     
     @POST

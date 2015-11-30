@@ -41,11 +41,14 @@ function doPost(methodName, dataMap, succesCallBack) {
     //for (var [key, value] of dataMap.entries()) {
     //	data += key + '=' + value + '&';
     //}
-    for (var i = 0, keys = Object.keys(dataMap), ii = keys.length; i < ii; i++) {
- 		console.log('key : ' + keys[i] + ' val : ' + dataMap[keys[i]]);
- 		data += keys[i] + '=' + dataMap[keys[i]] + '&';
-	}
-    data = data.substring(0, data.length-1);
+    
+    if (dataMap.size > 0) {
+	    for (var i = 0, keys = Object.keys(dataMap), ii = keys.length; i < ii; i++) {
+	 		console.log('key : ' + keys[i] + ' val : ' + dataMap[keys[i]]);
+	 		data += keys[i] + '=' + dataMap[keys[i]] + '&';
+		}
+	    data = data.substring(0, data.length - 1);
+    }
     console.log('data: ' + data);
     
     $.ajax({
@@ -85,13 +88,19 @@ function getSongs() {
 }
 
 function getUsers() {
+	var users;
+	doPost('getUsers', new Map(), function(result, status, xhr) {
+		console.log('result: ' + result.toString() + ' status: ' + status);
+		users = result;
+	});
+	return users;
 }
 
 
 function getSong() {
 	console.log('Get Song:');
 	var song;
-	callRest('getSong', 'POST', function(result, status, xhr) {
+	doPost('getSong', new Map(), function(result, status, xhr) {
 		console.log('result: ' + JSON.stringify(result) + ' status: ' + status);
 		song = result;
 	});
@@ -100,7 +109,7 @@ function getSong() {
 
 function getTime() {
 	console.log('Get Time:');
-	callRest('getTime', 'POST', function(result, status, xhr) {
+	doPost('getTime', new Map(), function(result, status, xhr) {
 		console.log('result: ' + JSON.stringify(result) + ' status: ' + status);
 		console.log('seektime: ' + result.seekTime);
 		return result;
