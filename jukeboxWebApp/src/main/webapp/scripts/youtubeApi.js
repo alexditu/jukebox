@@ -38,9 +38,13 @@ function doPost(methodName, dataMap, succesCallBack) {
     console.log('doPost');
     var data = '';
     
-    for (var [key, value] of dataMap.entries()) {
-    	data += key + '=' + value + '&';
-    }
+    //for (var [key, value] of dataMap.entries()) {
+    //	data += key + '=' + value + '&';
+    //}
+    for (var i = 0, keys = Object.keys(dataMap), ii = keys.length; i < ii; i++) {
+ 		console.log('key : ' + keys[i] + ' val : ' + dataMap[keys[i]]);
+ 		data += keys[i] + '=' + dataMap[keys[i]] + '&';
+	}
     data = data.substring(0, data.length-1);
     console.log('data: ' + data);
     
@@ -56,6 +60,17 @@ function doPost(methodName, dataMap, succesCallBack) {
 	  
 	});
     
+}
+
+function addUser(username) {
+	console.log('Add user: ' + username);
+	
+	var map = new Map();
+	map.set("username", username);
+	
+	doPost('addUser', map, function(result, status, xhr) {
+		console.log('result: ' + result.toString() + ' status: ' + status);
+	});
 }
 
 function getSongs() {
