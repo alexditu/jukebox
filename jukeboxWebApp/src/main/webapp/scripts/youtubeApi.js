@@ -34,6 +34,7 @@ function doPostJson(methodName, data, succesCallBack) {
     
 }
 
+
 function doPost(methodName, data, succesCallBack) {
     console.log('doPost');
 //    var data = '';
