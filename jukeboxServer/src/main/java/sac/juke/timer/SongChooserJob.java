@@ -40,16 +40,20 @@ public class SongChooserJob implements Job {
 		log.debug("Computing next song");
 		
 		
-		String nextSongId = "ZtFUX4Y2U84";
+//		String nextSongId = "ZtFUX4Y2U84";
 		/*TODO: add next song logic here */
+		
 		
 		/* dataMap: persistently keeps the jobs data in form of HashMap
 		 * currently it contains: servletContext and triggerTime */
 		JobDataMap dataMap = jobContext.getJobDetail().getJobDataMap();
 		ServletContext servletContext = (ServletContext)dataMap.get("servletContext");
-		Songs songList = Utils.getSongs(servletContext);
+//		Songs songList = Utils.getSongs(servletContext);
+//		
+//		Song nextSong = songList.getSong(nextSongId);
+		Song nextSong = chooseNextSong(servletContext);
+		String nextSongId = nextSong.getId();
 		
-		Song nextSong = songList.getSong(nextSongId);
 		int duration = nextSong.getDuration();
 		
 		Date triggerTime = updateTrigger(jobContext.getScheduler(), duration);
@@ -97,5 +101,24 @@ public class SongChooserJob implements Job {
 			return null;
 		}
 	}
+	
+	public Song chooseNextSong(ServletContext ctx) {
+		Songs songs = Utils.getSongs(ctx);
+		
+		Utils.incIter(ctx);
+		int iter = Utils.getIter(ctx);
+		
+		int totalSongs = songs.getTotalSongs();
+		
+		Song nextSong = songs.getSongAt(iter % totalSongs); // loop
+		
+		/* update age */
+		nextSong.setAge(iter);
+		
+		return nextSong;
+	}
+	
+	
+	
 
 }
