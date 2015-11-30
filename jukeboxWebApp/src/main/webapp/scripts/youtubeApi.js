@@ -91,6 +91,21 @@ function onYouTubeIframeAPIReady() {
 //    document.getElementById("player").style.visibility = "hidden";
 }
 
+function onPlayerReady(event) {
+	console.log('onPlayerReady');
+	doPost('getSong', '', loadSongCallback);
+}
+
+function onPlayerStateChange(event) {
+    if (event.data == YT.PlayerState.ENDED) {
+    	doPost('getSong', '', loadSongCallback);
+    }
+    
+}
+
+function hidePlayer() {
+	$('#player').style.visibility = "hidden";
+}
 
 
 
