@@ -1,5 +1,4 @@
 document.getElementById("loginButton").addEventListener("click", userLogin);
-var currentUser;
 
 $(document).ready(function(){
    		console.log("Got a here");
@@ -20,7 +19,8 @@ function userLogin() {
     	window.alert("Please provide a username");
     } else {
     	//trimit la alex 
+    	addUser(name);
+    	sessionStorage.setItem('username', name);
     	window.location.assign("/web/index.html");
-    	currentUser = name;
     }
 }
