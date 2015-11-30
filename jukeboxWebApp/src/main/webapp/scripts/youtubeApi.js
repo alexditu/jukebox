@@ -69,12 +69,18 @@ function getSongs() {
 	});
 }
 
+function getUsers() {
+}
+
 
 function getSong() {
 	console.log('Get Song:');
+	var song;
 	callRest('getSong', 'POST', function(result, status, xhr) {
 		console.log('result: ' + JSON.stringify(result) + ' status: ' + status);
+		song = result;
 	});
+	return song;
 }
 
 function getTime() {

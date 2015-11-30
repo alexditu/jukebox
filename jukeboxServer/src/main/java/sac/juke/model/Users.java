@@ -3,8 +3,9 @@ package sac.juke.model;
 import java.util.HashMap;
 
 import javax.json.Json;
-import javax.json.JsonArray;
 import javax.json.JsonArrayBuilder;
+import javax.json.JsonObject;
+import javax.json.JsonObjectBuilder;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -26,6 +27,15 @@ public class Users {
 		this.users = new HashMap<>();
 	}
 	
+	public Users(boolean addDefaultUsers) {
+		this();
+		if (addDefaultUsers == true) {
+			users.put("John", new User("John"));
+			users.put("Bob", new User("Bob"));
+			users.put("Alice", new User("Alice"));
+		}
+	}
+	
 	public synchronized User get(String userId) {
 		return users.get(userId);
 	}
@@ -44,21 +54,25 @@ public class Users {
 		StringBuilder sb = new StringBuilder();
 		for (String i : users.keySet()) {
 			sb.append(users.get(i).toString());
+			sb.append(" ");
     	}
 		
 		return sb.toString();
 	}
 	
 	/**
-	 * @return	JsonArray of User objects: [u1, u2..]
+	 * @return	JsonArray of User objects: {"users": [u1, u2..]}
 	 */
-	public synchronized JsonArray toJson() {
-		JsonArrayBuilder jsonBuilder = Json.createArrayBuilder();
+	public synchronized JsonObject toJson() {
+		JsonObjectBuilder jUsers = Json.createObjectBuilder();
+		JsonArrayBuilder array = Json.createArrayBuilder();
     	
     	for (String i : users.keySet()) {
-    		jsonBuilder.add(users.get(i).toJson());
+    		array.add(users.get(i).toJson());
     	}
     	
-    	return jsonBuilder.build();
+    	jUsers.add("users", array.build());
+    	
+    	return jUsers.build();
 	}
 }

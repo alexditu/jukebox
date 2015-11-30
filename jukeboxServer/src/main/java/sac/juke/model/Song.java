@@ -83,6 +83,11 @@ public class Song {
 		this.score = score;
 	}
 	
+	@Override
+	public String toString() {
+		return id;
+	}
+	
 //	private String id;		// id-ul melodiei, recunoscut de youtube
 //	private int duration;	// durata in secunde
 //	private int score;		// numarul de voturi

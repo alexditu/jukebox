@@ -98,11 +98,16 @@ public class JukeboxREST {
     	return b.build(); 
     }
     
+    /**
+     * 
+     * @return {"users":[{"username":"Bob","votedSongs":[]},
+     * 					 {"username":"Alice","votedSongs":[]}, ...}]}
+     */
     @POST
     @Path("getUsers")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.WILDCARD)
-    public JsonArray getUsers() { 
+    public JsonObject getUsers() { 
     	Users users = Utils.getUsers(servletContext);
     	log.debug("users: " + users.toString());    	
 //    	response.addHeader("Access-Control-Allow-Origin", "*");

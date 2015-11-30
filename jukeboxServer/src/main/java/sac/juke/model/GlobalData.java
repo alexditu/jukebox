@@ -7,7 +7,7 @@ public class GlobalData {
 	
 	public GlobalData() {
 		songs = new Songs(true);
-		users = new Users();
+		users = new Users(true);
 	}
 	
 	public synchronized Song getCurrentSong() {

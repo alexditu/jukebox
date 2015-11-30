@@ -69,6 +69,13 @@ public class JukeboxLogic {
 		Songs songs = Utils.getSongs(ctx);
 		User user = Utils.getUsers(ctx).get(username);
 		
+		
+		if (user == null) {
+			/* should not get here */
+			log.debug("Error: user not found: " + username);
+			return Json.createArrayBuilder().build();
+		}
+		
 		JsonArrayBuilder b = Json.createArrayBuilder();
 		for (String i : songs.getSongsKeySet()) {
 			JsonObjectBuilder song = songs.getSong(i).toJsonBuilder();
