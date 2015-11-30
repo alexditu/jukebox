@@ -49,7 +49,7 @@ public class JukeboxREST {
     @Path("getSongs")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.WILDCARD)
-    public JsonArray getSongs(@FormParam("username") String username) {
+    public JsonObject getSongs(@FormParam("username") String username) {
     	return JukeboxLogic.getSongsForUser(servletContext, username);
     }
     

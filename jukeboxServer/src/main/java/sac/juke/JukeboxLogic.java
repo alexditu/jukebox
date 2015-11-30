@@ -5,8 +5,8 @@ import java.time.Instant;
 import java.util.Date;
 
 import javax.json.Json;
-import javax.json.JsonArray;
 import javax.json.JsonArrayBuilder;
+import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 import javax.servlet.ServletContext;
 
@@ -63,9 +63,9 @@ public class JukeboxLogic {
 	 * song
 	 * @param ctx
 	 * @param username
-	 * @return			JsonArray with all songs
+	 * @return			{"songs": [song1, song2, ...]}
 	 */
-	public static JsonArray getSongsForUser(ServletContext ctx, String username) {
+	public static JsonObject getSongsForUser(ServletContext ctx, String username) {
 		Songs songs = Utils.getSongs(ctx);
 		User user = Utils.getUsers(ctx).get(username);
 		
@@ -73,17 +73,20 @@ public class JukeboxLogic {
 		if (user == null) {
 			/* should not get here */
 			log.debug("Error: user not found: " + username);
-			return Json.createArrayBuilder().build();
+			return Json.createObjectBuilder().build();
 		}
 		
-		JsonArrayBuilder b = Json.createArrayBuilder();
+		JsonArrayBuilder arr = Json.createArrayBuilder();
 		for (String i : songs.getSongsKeySet()) {
 			JsonObjectBuilder song = songs.getSong(i).toJsonBuilder();
 			song.add("voted", user.hasVoted(i));
-			b.add(song.build());
+			arr.add(song.build());
 		}
 		
-		return b.build();
+		JsonObjectBuilder ret = Json.createObjectBuilder();
+		ret.add("songs", arr.build());
+		
+		return ret.build();
 	}
 	
 }
