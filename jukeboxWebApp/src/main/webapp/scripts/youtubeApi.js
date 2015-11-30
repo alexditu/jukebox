@@ -34,22 +34,28 @@ function doPostJson(methodName, data, succesCallBack) {
     
 }
 
-function doPost(methodName, dataMap, succesCallBack) {
+function doPost(methodName, data, succesCallBack) {
     console.log('doPost');
-    var data = '';
+//    var data = '';
     
-    //for (var [key, value] of dataMap.entries()) {
-    //	data += key + '=' + value + '&';
-    //}
-    
-    if (dataMap.size > 0) {
-	    for (var i = 0, keys = Object.keys(dataMap), ii = keys.length; i < ii; i++) {
-	 		console.log('key : ' + keys[i] + ' val : ' + dataMap[keys[i]]);
-	 		data += keys[i] + '=' + dataMap[keys[i]] + '&';
-		}
-	    data = data.substring(0, data.length - 1);
-    }
-    console.log('data: ' + data);
+//    console.log('dataMap: ' + typeof dataMap);
+//    
+//    if (dataMap.size > 0) {
+////	    for (var i = 0, keys = Object.keys(dataMap), ii = keys.length; i < ii; i++) {
+////	 		console.log('key : ' + keys[i] + ' val : ' + dataMap[keys[i]]);
+////	 		data += keys[i] + '=' + dataMap[keys[i]] + '&';
+////		}
+//	    
+////	    for (var [key, value] of dataMap.entries()) {
+////	    	data += key + '=' + value + '&';
+////	    }
+//    	
+//    	for (var key in dataMap) {
+//    		data += key + '=' + dataMap[key] + '&';
+//    	}
+//	    data = data.substring(0, data.length - 1);
+//    }
+//    console.log('data: ' + data);
     
     $.ajax({
 	  url:'/juke/j/rest/' + methodName,
@@ -65,56 +71,24 @@ function doPost(methodName, dataMap, succesCallBack) {
     
 }
 
-function addUser(username) {
-	console.log('Add user: ' + username);
-	
-	var map = new Map();
-	map.set("username", username);
-	
-	doPost('addUser', map, function(result, status, xhr) {
-		console.log('result: ' + result.toString() + ' status: ' + status);
-	});
+/* loads the song after getSong returns */
+function loadSongCallback(result, status, xhr) {
+	var song = JSON.parse(result);
+	player.loadVideoById({'videoId': song.id, 'startSeconds': song.seekTime});
 }
 
-function getSongs() {
-	console.log('Get Songs:');
-	
-	var map = new Map();
-	map.set("username", "alex");
-	
-	doPost('getSongs', map, function(result, status, xhr) {
-		console.log('result: ' + result.toString() + ' status: ' + status);
-	});
-}
-
-function getUsers() {
-	var users;
-	doPost('getUsers', new Map(), function(result, status, xhr) {
-		console.log('result: ' + result.toString() + ' status: ' + status);
-		users = result;
-	});
-	return users;
-}
-
-
-function getSong() {
-	console.log('Get Song:');
-	var song;
-	doPost('getSong', new Map(), function(result, status, xhr) {
-		console.log('result: ' + JSON.stringify(result) + ' status: ' + status);
-		song = result;
-	});
-	return song;
-}
-
-function getTime() {
-	console.log('Get Time:');
-	doPost('getTime', new Map(), function(result, status, xhr) {
-		console.log('result: ' + JSON.stringify(result) + ' status: ' + status);
-		console.log('seektime: ' + result.seekTime);
-		return result;
-	});
-	
+/* first function called by YT API, inits the player */
+function onYouTubeIframeAPIReady() {
+    player = new YT.Player('player', {
+      height: '390',
+      width: '640',
+      //videoId: 'Wha1sKumYQ4',
+      events: {
+        'onReady': onPlayerReady,
+        'onStateChange': onPlayerStateChange
+      }
+    });
+//    document.getElementById("player").style.visibility = "hidden";
 }
 
 
