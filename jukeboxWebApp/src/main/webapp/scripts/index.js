@@ -7,28 +7,28 @@ document.getElementById("all").addEventListener("click", function(){ displayRece
 function displaySongs(scenario) {
     var param = "username=" + "Alice";
 
-    doPost('getSongs', map, function(result, status, xhr) {
+    doPost('getSongs', param, function(result, status, xhr) {
         console.log(result.toString())
         result = JSON.parse(result);
-        if (scenario == "recent") {
-            result.sort(function(a,b){
-                if(a.age == B.age)
-                    return 0;
-                if(a.age < B.age)
-                    return 1;
-                if(a.age > B.age)
-                    return -1;
-            });
-        } else if (scenario == "trending") {
-            result.sort(function(a,b){
-                if(a.score == B.score)
-                    return 0;
-                if(a.score < B.score)
-                    return 1;
-                if(a.score > B.score)
-                    return -1;
-            });
-        }
+        // if (scenario == "recent") {
+        //     result.sort(function(a,b){
+        //         if(a.age == b.age)
+        //             return 0;
+        //         if(a.age < b.age)
+        //             return 1;
+        //         if(a.age > b.age)
+        //             return -1;
+        //     });
+        // } else if (scenario == "trending") {
+        //     result.sort(function(a,b){
+        //         if(a.score == b.score)
+        //             return 0;
+        //         if(a.score < b.score)
+        //             return 1;
+        //         if(a.score > b.score)
+        //             return -1;
+        //     });
+        // }
         $.get('templates/songList.html', function(template) {
             var rendered = Mustache.render(template, result);
             $('#recent').html(rendered);
