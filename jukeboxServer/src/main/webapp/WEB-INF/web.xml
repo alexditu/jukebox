@@ -5,6 +5,15 @@
  
     <servlet>
         <servlet-name>sac.juke.RestApplication</servlet-name>
+        <servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>
+        <init-param>
+		    <param-name>javax.ws.rs.Application</param-name>
+		    <param-value>sac.juke.RestApplication</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+		
+		<!-- Needed for Server Sent Events -->
+		<async-supported>true</async-supported>
     </servlet>
     <servlet-mapping>
         <servlet-name>sac.juke.RestApplication</servlet-name>

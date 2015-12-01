@@ -1,7 +1,8 @@
 package sac.juke;
 
+import java.io.IOException;
+
 import javax.json.Json;
-import javax.json.JsonArray;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 import javax.servlet.ServletContext;
@@ -20,6 +21,10 @@ import javax.ws.rs.core.Response;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.glassfish.jersey.media.sse.EventOutput;
+import org.glassfish.jersey.media.sse.OutboundEvent;
+import org.glassfish.jersey.media.sse.SseBroadcaster;
+import org.glassfish.jersey.media.sse.SseFeature;
 
 import sac.juke.exceptions.UserExistsException;
 import sac.juke.model.Song;
@@ -44,6 +49,87 @@ public class JukeboxREST {
     public JukeboxREST() {
         super();
     }
+    
+    /* --------------------------------------------------------------------------------------------*/
+    /* Server Sent Events example */
+    static EventOutput eventOutput = new EventOutput();
+    static SseBroadcaster broadcaster = new SseBroadcaster();
+    
+    @GET
+    @Path("closeSSE")
+    public String closeSSE() {
+    	try {
+			eventOutput.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+			return "error\n";
+		}
+    	
+    	return "ok\n";
+    }
+    
+    @GET
+    @Path("broadcast")
+    public String broadcast() {
+    	OutboundEvent.Builder eventBuilder = new OutboundEvent.Builder();
+        OutboundEvent event = eventBuilder.name("msg")
+            .mediaType(MediaType.TEXT_PLAIN_TYPE)
+            .data(String.class, "broadast msg")
+            .build();
+ 
+        broadcaster.broadcast(event);
+        log.debug("Sent broadcast message");
+    	return "ok\n";
+    }
+    
+    /* test method for sending message */
+    @GET
+    @Path("sendSSE")
+    public String sendSSE() {
+    	log.debug("sending message");
+    	final OutboundEvent.Builder eventBuilder
+        = new OutboundEvent.Builder();
+        eventBuilder.name("msg");
+        eventBuilder.id("id1");
+        eventBuilder.data(String.class, "sending message");
+        final OutboundEvent event = eventBuilder.build();
+        
+        try {
+        	log.debug("wrote event: " + event.getId() + " " + event.getData() + " " + event.getName());
+        	eventOutput.write(event);
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+			return "ERROR";
+		}
+        
+        return "OK";
+    }
+    
+    /* Open one SSE connection */
+    @GET
+    @Path("testSSE")
+    @Produces(SseFeature.SERVER_SENT_EVENTS)
+    public EventOutput getServerSentEvents() {
+        log.debug("returning eventOutput");
+        eventOutput = new EventOutput();
+        return eventOutput;
+    }
+    
+    /* Clients will open many SSE connections */
+    @GET
+    @Path("listenToBroadcast")
+    @Produces(SseFeature.SERVER_SENT_EVENTS)
+    public EventOutput listenToBroadcast() {
+        final EventOutput eventOutput = new EventOutput();
+        broadcaster.add(eventOutput);
+        return eventOutput;
+    }
+    
+    /* --------------------------------------------------------------------------------------------*/
+    
+    
+    
     
     @POST
     @Path("getSongs")

@@ -107,5 +107,78 @@ function hidePlayer() {
 	$('#player').style.visibility = "hidden";
 }
 
+/* Test server sent events */
+var evtSource;
+function testSSE() {
+	evtSource = new EventSource("/juke/j/rest/testSSE");
+	console.log('SSE');
+	
+	evtSource.onmessage = function(e) {
+		  console.log('HERE: ' + e);
+		  console.log('event: ' + e.event);
+		  console.log('data: ' + e.data);
+		  console.log('id: ' + e.id);
+		  console.log('retry: ' + e.retry + '\n');
+		};
+		
+	evtSource.onopen = function (e) {
+		 console.log("Waiting message..");
+		 console.log(e);
+	};
+	
+	evtSource.onerror = function(e) {
+		  console.log('Error');
+		  alert(e);
+		};
+		
+	evtSource.addEventListener("msg", function(e) {
+		console.log("MSG: " + e);
+		console.log("source:" + e.toSource());
+		console.log('event: ' + e.event);
+		console.log('data: ' + e.data);
+		console.log('id: ' + e.id);
+		console.log('retry: ' + e.retry + '\n');
+		}, false);
+	
+//	setTimeout(function(){ console.log('Closing connection'); evtSource.close(); }, 10000);
+}
+
+var evtBcastSource;
+function bcastSSE() {
+	evtBcastSource = new EventSource("/juke/j/rest/listenToBroadcast");
+	console.log('SSE');
+	
+	evtBcastSource.onmessage = function(e) {
+		  console.log('HERE: ' + e);
+		  console.log('event: ' + e.event);
+		  console.log('data: ' + e.data);
+		  console.log('id: ' + e.id);
+		  console.log('retry: ' + e.retry + '\n');
+		};
+		
+	evtBcastSource.onopen = function (e) {
+		 console.log("Waiting message..");
+		 console.log(e);
+	};
+	
+	evtBcastSource.onerror = function(e) {
+		  console.log('Error');
+	};
+		
+	evtBcastSource.addEventListener("msg", function(e) {
+		console.log('event: ' + e.event);
+		console.log('data: ' + e.data);
+		console.log('id: ' + e.id);
+		console.log('retry: ' + e.retry + '\n');
+		}, false);
+	
+//	setTimeout(function(){ console.log('Closing connection'); evtSource.close(); }, 10000);
+}
+
+function closeSSE() {
+	console.log('closing sse');
+	evtSource.close();
+}
+
 
 

@@ -12,13 +12,14 @@
   	<button id="bTime" onclick="getTime();">getTime</button>
   	<button id="bSongs" onclick="getSongs();">getSongs</button>
   	<button id="bUsers" onclick="getUsers();">getUsers</button>
-  	<button id="test" onclick="test();">test</button>
-  
+  	<button id="test" onclick="testSSE();">testSSE</button>
+  	<button id="test2" onclick="closeSSE();">closeSSE</button>
+  	<button id="test3" onclick="bcastSSE();">bcastSSE</button>
     <!-- 1. The <iframe> (and video player) will replace this <div> tag. -->
     <div id="player" hidden></div>
 
     <script>
-    
+      
       function test() {
     	  var data = 'username=Alice';
     	  doPost('getSongs', data, function(a,b,c) {
