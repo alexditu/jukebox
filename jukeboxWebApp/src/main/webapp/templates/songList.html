@@ -16,6 +16,7 @@
           <th>Artist</th>
           <th>Song</th>
           <th>Score</th>
+          <th>Vote</th>
         </tr>
       </thead>
   </table>
@@ -29,6 +30,12 @@
           <td>{{artist}}</td>
           <td>{{name}}</td>
           <td>{{score}}</td>
+          {{#voted}}
+            <td><input type="checkbox" id="{{id}}" onclick="checkSong(this);" checked></td>
+          {{/voted}}
+          {{^voted}}
+            <td><input type="checkbox" id="{{id}}" onclick="checkSong(this);"></td>
+          {{/voted}}
         </tr>
       {{/songs}}
     </tbody>

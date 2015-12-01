@@ -11,8 +11,14 @@ $(document).ready(function(){
     });
 });
 
+function checkSong(author) {
+    var param = "username=" + username + "&songID=" + author.id + "&checked=" + author.checked;
+
+    doPost("checkSong", param, function(result, status, xhr) {});
+}
+
 function displaySongs(scenario) {
-    var param = "username=" + "Alice";
+    var param = "username=" + username;
 
     console.log("Here " + scenario);
 

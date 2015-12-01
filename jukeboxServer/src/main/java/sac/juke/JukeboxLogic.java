@@ -80,6 +80,7 @@ public class JukeboxLogic {
 		for (String i : songs.getSongsKeySet()) {
 			JsonObjectBuilder song = songs.getSong(i).toJsonBuilder();
 			song.add("voted", user.hasVoted(i));
+			log.debug(username + " " + i + "has voted " + user.hasVoted(i));
 			arr.add(song.build());
 		}
 		
@@ -87,6 +88,39 @@ public class JukeboxLogic {
 		ret.add("songs", arr.build());
 		
 		return ret.build();
+	}
+	
+	/**
+	 * Sets a song checked/not checked after user input
+	 * @param ctx
+	 * @param username
+	 * @param id
+	 * @param checked
+	 * @return			{OK/FAIL}
+	 */
+	public static String markChecked(ServletContext ctx, String username, String id, boolean checked) {
+		User user = Utils.getUsers(ctx).get(username);
+		
+		if (user == null) {
+			/* should not get here */
+			log.debug("Error: user not found: " + username);
+			return "FAIL";
+		}
+		
+		if (user.hasVoted(id)) {
+			if (!checked) {
+				user.unvote(id);
+			}
+		} else {
+			//log.debug(username + " " + id + " not checked, checking");
+			if (checked) {
+				//log.debug(username + " " + id + " now checked");
+				user.vote(id);
+				log.debug(username + " " + id + user.hasVoted(id));
+			}
+		}
+		
+		return "OK";
 	}
 	
 }

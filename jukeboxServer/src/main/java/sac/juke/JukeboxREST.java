@@ -54,6 +54,16 @@ public class JukeboxREST {
     }
     
     @POST
+    @Path("checkSong")
+    @Produces("text/plain")
+    @Consumes(MediaType.WILDCARD)
+    public String checkSong(@FormParam("username") String username,
+    							@FormParam("songID") String id,
+    							@FormParam("checked") boolean checked) {
+    	return JukeboxLogic.markChecked(servletContext, username, id, checked);
+    }
+    
+    @POST
     @Path("getSong")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)

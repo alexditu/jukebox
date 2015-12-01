@@ -30,6 +30,14 @@ public class User {
 		this.username = username;
 	}
 	
+	public void vote(String id) {
+		votedSongs.add(id);
+	}
+	
+	public void unvote(String id) {
+		votedSongs.remove(id);
+	}
+	
 	@Override
 	public String toString() {
 		return username;
