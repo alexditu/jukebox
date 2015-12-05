@@ -1,3 +1,34 @@
+Collaborative Jukebox - etapa 2
+
+Papa Florin, SRIC
+Ditu Alexandru, SRIC
+Mardaloescu Serban, ISI
+
+Pana la momentul curent, am implementat, in mare parte, componenta de front-end
+a aplicatiei, care foloseste HTML5, Javascript (jquery, mustache) si CSS
+(bootstrap). Mustache.js reprezinta un framework pentru rendering de
+template-uri pe care il folosim pentru a incarca in mod dinamic continutul
+paginii principale a aplicatiei (lista de utilizatori, melodii, punctaj etc.).
+Datele de la server sunt furnizate in format JSON clientului, care le foloseste
+pentru a popula pagina principala. Melodia curenta este redata folosind
+Youtube API (Javascript).
+
+Server-ul este o aplicatie Java EE care mentine lista utilizatorilor activi,
+lista de melodii, scorul melodiilor, voturile utilizatorilor, melodia curenta,
+timestamp-ul curent (pentru sincronizarea clientilor) etc. Pe partea de server,
+am implementat componenta de login a utilizatorilor, inregistrarea voturilor,
+transmiterea datelor catre clienti in format JSON, push notifications (pentru
+a face update la datele din interfata clientului - utilizatori, melodii, scor
+etc.).
+
+Activitati urmatoare:
+* integrare player audio in aplicatia client
+* dezvoltare algoritm de votare
+* implementare colaborare intre utilizatori
+	* posibilitatea de "follow" - transfer putere de votare
+* integrare push notifications in aplicatia client
+
+
 Tools:
 	Eclipse Mars version
 	Glassfish 4.1.1
@@ -52,10 +83,6 @@ curl -X POST -kv http://localhost:8080/juke/j/rest/getTime
 
 # getSong -- returns current song info
 curl -X POST -kv http://localhost:8080/juke/j/rest/getSong
-
-
-
-
 
 
 Log4j2:

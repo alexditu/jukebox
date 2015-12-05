@@ -3,6 +3,7 @@ window.onload = loadVariables;
 document.getElementById("tab_recent").addEventListener("click", function(){ displaySongs("recent"); });
 document.getElementById("tab_trending").addEventListener("click", function(){ displaySongs("trending"); });
 document.getElementById("tab_all").addEventListener("click", function(){ displaySongs("all"); });
+document.getElementById("logout").addEventListener("click", function(){ logout(); });
 
 $(document).ready(function(){
 
@@ -11,19 +12,24 @@ $(document).ready(function(){
     });
 });
 
+function logout() {
+    var param = "username=" + username;
+    doPost("removeUser", param, function(result, status, xhr) {});
+    window.location.assign("/web/login.html");
+}
+
 function checkSong(author) {
     var param = "username=" + username + "&songID=" + author.id + "&checked=" + author.checked;
-
     doPost("checkSong", param, function(result, status, xhr) {});
 }
 
 function displaySongs(scenario) {
     var param = "username=" + username;
 
-    console.log("Here " + scenario);
+    //console.log("Here " + scenario);
 
     doPost('getSongs', param, function(result, status, xhr) {
-        console.log(result.toString())
+        //console.log(result.toString())
         result = JSON.parse(result);
         if (scenario == "recent") {
             result.songs.sort(function(a,b){
@@ -65,9 +71,20 @@ function displayUsers() {
 
 function loadVariables() {
     username = sessionStorage.getItem('username');
-    document.getElementById("username").innerHTML = username;
-    console.log("Username is " + username);
+    document.getElementById("username").innerHTML = username + "<span class=\"caret\"></span>";
+    //console.log("Username is " + username);
 
     displayUsers();
     displaySongs("recent");
+
+    setCurrentSong();
+}
+
+function setCurrentSong() {
+    console.log("Got hereeeee");
+    doPost("getSong", "", function(result, status, xhr) {
+        console.log("Requesting current song: " + result);
+        result = JSON.parse(result);
+        document.getElementById("currentSong").innerHTML = "Now playing:    " + result.artist + " - " + result.name;
+    });
 }

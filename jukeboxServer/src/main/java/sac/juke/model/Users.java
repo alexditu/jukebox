@@ -50,6 +50,14 @@ public class Users {
 		}
 	}
 	
+	public synchronized void remove(String userId) {
+		
+		if (users.containsKey(userId)) {
+			log.debug("User " + userId + " exists, removing");
+			users.remove(userId);
+		}
+	}
+	
 	public synchronized String toString() {
 		StringBuilder sb = new StringBuilder();
 		for (String i : users.keySet()) {

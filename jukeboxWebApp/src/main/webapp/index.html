@@ -45,11 +45,13 @@
                 <li><a href="#">Blues</a></li>
               </ul>
             </li>
-            <li hidden></li>
-            <li hidden></li>
-            <li hidden></li>
-            <li hidden></li>
-            <li><a href="#" id="username"></a></li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" id="username"></a>
+              <ul class="dropdown-menu" role="menu">
+                <li id="logout"><a href="#">Logout</a></li>
+                <li><a href="#">Point</a></li>
+              </ul>
+            </li>
           </ul>
         </div>
       </div>
@@ -70,7 +72,7 @@
         </div>
 
         <div class="alert alert-dismissible alert-warning">
-          <p>Now Playing: Adele</p>
+          <p id="currentSong">Now Playing: Adele</p>
         </div>
       </div>
       <div class="col-lg-3">

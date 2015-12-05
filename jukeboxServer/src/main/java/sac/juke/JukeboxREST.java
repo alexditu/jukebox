@@ -112,6 +112,19 @@ public class JukeboxREST {
     	return b.build(); 
     }
     
+    @POST
+    @Path("removeUser")
+    @Produces("text/plain")
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    public String removeUser(@FormParam("username") String username) {
+    	log.debug("removing username: " + username);
+    	Users users = Utils.getUsers(servletContext);
+    	
+    	users.remove(username);
+    	
+    	return "OK"; 
+    }
+    
     /**
      * 
      * @return {"users":[{"username":"Bob","votedSongs":[]},
