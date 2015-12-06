@@ -7,6 +7,8 @@ import java.util.Set;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import jersey.repackaged.com.google.common.collect.Iterables;
+
 /**
  * TODO: generate songs from youtube or other source
  * @author alex
@@ -46,6 +48,12 @@ public class Songs {
 		return ids.size();
 	}
 	
+	public void flushSongVotes() {
+		for (Song s : this.songs.values()) {
+			s.flushVotes();
+		}
+	}
+	
 	public synchronized void vote(String id, User u) {
 		HashMap<String, Integer> votedSongs = u.getVotedSongs();
 		for(String songId : votedSongs.keySet()) {
@@ -69,6 +77,20 @@ public class Songs {
 	public synchronized void  addSong(String id, Song song) {
 		songs.put(id, song);
 		ids.add(id);
+	}
+	
+	public Song getNextSong() {
+		int maxScore = -1;
+		Song nextSong = this.songs.values().iterator().next();
+		
+		for (Song s : this.songs.values()) {
+			if (s.getScore() > maxScore) {
+				nextSong = s;
+				maxScore = s.getScore();
+			}
+		}
+		
+		return nextSong;
 	}
 	
 	public void addDefaultSongs() {

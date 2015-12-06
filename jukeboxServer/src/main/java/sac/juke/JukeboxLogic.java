@@ -80,7 +80,6 @@ public class JukeboxLogic {
 		for (String i : songs.getSongsKeySet()) {
 			JsonObjectBuilder song = songs.getSong(i).toJsonBuilder();
 			song.add("voted", user.hasVoted(i));
-			log.debug(username + " " + i + "has voted " + user.hasVoted(i));
 			arr.add(song.build());
 		}
 		
@@ -119,12 +118,9 @@ public class JukeboxLogic {
 				//log.debug(username + " " + id + " now checked");
 				user.vote(id);
 				songs.vote(id, user);
-				log.debug(username + " " + id + user.hasVoted(id));
 			}
 		}
-		
-		
-		
+			
 		return "OK";
 	}
 	

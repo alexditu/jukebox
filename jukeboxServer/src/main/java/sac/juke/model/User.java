@@ -33,6 +33,10 @@ public class User {
 		this.username = username;
 	}
 	
+	public void flushSongs() {
+		votedSongs.clear();
+	}
+	
 	public HashMap<String, Integer> getVotedSongs() {
 		return this.votedSongs;
 	}
@@ -58,7 +62,11 @@ public class User {
 	}
 	
 	public int getVotingPower() {
-		return this.votingPower / this.votedSongs.size();
+		return this.votingPower;
+	}
+	
+	public void setVotingPower(int power) {
+		this.votingPower = power;
 	}
 	
 	@Override

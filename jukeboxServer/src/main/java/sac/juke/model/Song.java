@@ -42,6 +42,11 @@ public class Song {
 		this.userVotes = new HashMap<>();
 	}
 
+	public void flushVotes() {
+		this.userVotes.clear();
+		this.score = 0;
+	}
+	
 	public String getName() {
 		return name;
 	}

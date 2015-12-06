@@ -68,6 +68,29 @@ public class Users {
 		return sb.toString();
 	}
 	
+	public void flushVotedSongs() {
+		for (User u : users.values()) {
+			u.flushSongs();
+		}
+	}
+	
+	public void updateVotingPower(String nextSong) {
+		for (User u : users.values()) {
+			HashMap<String, Integer> votedSongs = u.getVotedSongs();
+			if (votedSongs.containsKey(nextSong)) {
+				int power = u.getVotingPower();
+				if (power >= 10) {
+					u.setVotingPower(power - 10);
+				}
+			} else {
+				int power = u.getVotingPower();
+				if (power <= 90) {
+					u.setVotingPower(power + 10);
+				}
+			}
+		}
+	}
+	
 	/**
 	 * @return	JsonArray of User objects: {"users": [u1, u2..]}
 	 */

@@ -21,6 +21,7 @@ import org.quartz.TriggerBuilder;
 import sac.juke.model.GlobalData;
 import sac.juke.model.Song;
 import sac.juke.model.Songs;
+import sac.juke.model.Users;
 import sac.juke.util.Constants;
 import sac.juke.util.Utils;
 
@@ -35,22 +36,14 @@ public class SongChooserJob implements Job {
 	 */
 	@Override
 	public void execute(JobExecutionContext jobContext) {
-		
 
 		log.debug("Computing next song");
-		
-		
-//		String nextSongId = "ZtFUX4Y2U84";
-		/*TODO: add next song logic here */
-		
-		
+
 		/* dataMap: persistently keeps the jobs data in form of HashMap
 		 * currently it contains: servletContext and triggerTime */
 		JobDataMap dataMap = jobContext.getJobDetail().getJobDataMap();
 		ServletContext servletContext = (ServletContext)dataMap.get("servletContext");
-//		Songs songList = Utils.getSongs(servletContext);
-//		
-//		Song nextSong = songList.getSong(nextSongId);
+
 		Song nextSong = chooseNextSong(servletContext);
 		String nextSongId = nextSong.getId();
 		
@@ -63,7 +56,6 @@ public class SongChooserJob implements Job {
 		log.debug("Next song is: " + nextSong);
 		GlobalData data = Utils.getGlobalData(servletContext);
 		data.setCurrentSong(nextSongId);
-
 	}
 	
 	/**
@@ -102,23 +94,30 @@ public class SongChooserJob implements Job {
 		}
 	}
 	
+	private void updateServerState(Songs songs, Users users, Song nextSong) {
+		users.updateVotingPower(nextSong.getId());
+		users.flushVotedSongs();
+		songs.flushSongVotes();
+	}
+	
 	public Song chooseNextSong(ServletContext ctx) {
 		Songs songs = Utils.getSongs(ctx);
+		Users users = Utils.getUsers(ctx);
 		
 		Utils.incIter(ctx);
 		int iter = Utils.getIter(ctx);
 		
-		int totalSongs = songs.getTotalSongs();
+		/* Request next song according to its score */
+		Song nextSong = songs.getNextSong();
 		
-		Song nextSong = songs.getSongAt(iter % totalSongs); // loop
+		log.debug("Next song was chosen: " + nextSong.getId() + " " + (nextSong.getScore()));
+		
+		/* Update server internal state and maximum score for users */
+		updateServerState(songs, users, nextSong);
 		
 		/* update age */
 		nextSong.setAge(iter);
 		
 		return nextSong;
 	}
-	
-	
-	
-
 }
