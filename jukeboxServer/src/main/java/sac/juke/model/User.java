@@ -1,6 +1,6 @@
 package sac.juke.model;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.json.Json;
 import javax.json.JsonArrayBuilder;
@@ -11,15 +11,18 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class User {
 	String username;
-	ArrayList<String> votedSongs;
+	HashMap<String, Integer> votedSongs;
+	int votingPower;
 	
 	public User() {
-		this.votedSongs = new ArrayList<>();
+		this.votedSongs = new HashMap<>();
+		this.votingPower = 100;
 	}
 	
 	public User(String username) {
 		this();
 		this.username = username;
+		this.votingPower = 100;
 	}
 
 	public String getUsername() {
@@ -30,12 +33,32 @@ public class User {
 		this.username = username;
 	}
 	
+	public HashMap<String, Integer> getVotedSongs() {
+		return this.votedSongs;
+	}
+	
 	public void vote(String id) {
-		votedSongs.add(id);
+		int newScore = this.votingPower / (this.votedSongs.size() + 1);
+		this.votedSongs.put(id, newScore);
+		for (String key : this.votedSongs.keySet()) {
+			this.votedSongs.put(key, newScore);
+		}
 	}
 	
 	public void unvote(String id) {
 		votedSongs.remove(id);
+		if (this.votedSongs.size() == 0) {
+			return;
+		} else {
+			int newScore = this.votingPower / this.votedSongs.size();
+			for (String key : this.votedSongs.keySet()) {
+				this.votedSongs.put(key, newScore);
+			}
+		}
+	}
+	
+	public int getVotingPower() {
+		return this.votingPower / this.votedSongs.size();
 	}
 	
 	@Override
@@ -44,7 +67,7 @@ public class User {
 	}
 	
 	public boolean hasVoted(String songId) {
-		return votedSongs.contains(songId);
+		return votedSongs.keySet().contains(songId);
 	}
 	
 	/**
@@ -55,7 +78,7 @@ public class User {
 		builder.add("username", username);
 		
 		JsonArrayBuilder arrBuilder = Json.createArrayBuilder();
-		for (String i : votedSongs) {
+		for (String i : votedSongs.keySet()) {
 			arrBuilder.add(i);
 		}
 		builder.add("votedSongs", arrBuilder.build());

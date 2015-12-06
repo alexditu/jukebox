@@ -1,5 +1,7 @@
 package sac.juke.model;
 
+import java.util.HashMap;
+
 import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
@@ -16,6 +18,7 @@ public class Song {
 	private int score;		// numarul de voturi
 	private String name;
 	private String artist;
+	private HashMap<String, Integer> userVotes;
 	
 	/* used for MostRecent songs sort. It increases when a song ends */
 	private int age;
@@ -36,6 +39,7 @@ public class Song {
 		this.name = name;
 		this.artist = artist;
 		this.age = 0;
+		this.userVotes = new HashMap<>();
 	}
 
 	public String getName() {
@@ -46,6 +50,22 @@ public class Song {
 		this.name = name;
 	}
 
+	public void update(String userId, int score) {
+		if (score == 0) {
+			this.userVotes.remove(userId);
+		} else {
+			this.userVotes.put(userId, score);
+		}
+		updateTotal();
+	}
+	
+	private void updateTotal() {
+		this.score = 0;
+		for (int sc : this.userVotes.values()) {
+			this.score += sc;
+		}
+	}
+	
 	public String getArtist() {
 		return artist;
 	}

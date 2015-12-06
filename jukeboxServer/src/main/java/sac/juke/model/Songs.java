@@ -46,6 +46,21 @@ public class Songs {
 		return ids.size();
 	}
 	
+	public synchronized void vote(String id, User u) {
+		HashMap<String, Integer> votedSongs = u.getVotedSongs();
+		for(String songId : votedSongs.keySet()) {
+			this.songs.get(songId).update(u.getUsername(), votedSongs.get(songId));
+		}
+	}
+	
+	public synchronized void unvote(String id, User u) {
+		HashMap<String, Integer> votedSongs = u.getVotedSongs();
+		this.songs.get(id).update(u.getUsername(), 0);
+		for(String songId : votedSongs.keySet()) {
+			this.songs.get(songId).update(u.getUsername(), votedSongs.get(songId));
+		}
+	}
+	
 	//TODO: remove synchronized if the list is readOnly
 	public synchronized Song getSong(String id) {
 		return songs.get(id);

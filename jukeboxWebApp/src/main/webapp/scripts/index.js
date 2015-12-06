@@ -29,7 +29,7 @@ function displaySongs(scenario) {
     //console.log("Here " + scenario);
 
     doPost('getSongs', param, function(result, status, xhr) {
-        //console.log(result.toString())
+        console.log(result.toString())
         result = JSON.parse(result);
         if (scenario == "recent") {
             result.songs.sort(function(a,b){

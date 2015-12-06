@@ -100,6 +100,7 @@ public class JukeboxLogic {
 	 */
 	public static String markChecked(ServletContext ctx, String username, String id, boolean checked) {
 		User user = Utils.getUsers(ctx).get(username);
+		Songs songs = Utils.getSongs(ctx); 
 		
 		if (user == null) {
 			/* should not get here */
@@ -110,15 +111,19 @@ public class JukeboxLogic {
 		if (user.hasVoted(id)) {
 			if (!checked) {
 				user.unvote(id);
+				songs.unvote(id, user);
 			}
 		} else {
 			//log.debug(username + " " + id + " not checked, checking");
 			if (checked) {
 				//log.debug(username + " " + id + " now checked");
 				user.vote(id);
+				songs.vote(id, user);
 				log.debug(username + " " + id + user.hasVoted(id));
 			}
 		}
+		
+		
 		
 		return "OK";
 	}
