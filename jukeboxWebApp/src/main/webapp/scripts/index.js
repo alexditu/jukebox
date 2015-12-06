@@ -29,7 +29,7 @@ function displaySongs(scenario) {
     //console.log("Here " + scenario);
 
     doPost('getSongs', param, function(result, status, xhr) {
-        console.log(result.toString())
+        //console.log(result.toString())
         result = JSON.parse(result);
         if (scenario == "recent") {
             result.songs.sort(function(a,b){
@@ -69,6 +69,14 @@ function displayUsers() {
     });
 }
 
+function displayUserPower() {
+    params = "username=" + username;
+    doPost("getPower", params, function(result, status, xhr) {
+        result = JSON.parse(result);
+        document.getElementById("userPower").innerHTML = "Voting Power: " + result.power;
+    });
+}
+
 function loadVariables() {
     username = sessionStorage.getItem('username');
     document.getElementById("username").innerHTML = username + "<span class=\"caret\"></span>";
@@ -76,14 +84,14 @@ function loadVariables() {
 
     displayUsers();
     displaySongs("recent");
+    displayUserPower();
 
     setCurrentSong();
 }
 
 function setCurrentSong() {
-    console.log("Got hereeeee");
     doPost("getSong", "", function(result, status, xhr) {
-        console.log("Requesting current song: " + result);
+        //console.log("Requesting current song: " + result);
         result = JSON.parse(result);
         document.getElementById("currentSong").innerHTML = "Now playing:    " + result.artist + " - " + result.name;
     });

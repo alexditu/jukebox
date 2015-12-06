@@ -125,6 +125,17 @@ public class JukeboxREST {
     	return "OK"; 
     }
     
+    @POST
+    @Path("getPower")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    public JsonObject getPower(@FormParam("username") String username) {
+    	log.debug("Getting power for username: " + username);
+    	Users users = Utils.getUsers(servletContext);
+    	User u = users.get(username);
+    	return u.toJson();
+    }
+    
     /**
      * 
      * @return {"users":[{"username":"Bob","votedSongs":[]},

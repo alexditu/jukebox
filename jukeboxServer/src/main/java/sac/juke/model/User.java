@@ -84,6 +84,7 @@ public class User {
 	public JsonObject toJson() {
 		JsonObjectBuilder builder = Json.createObjectBuilder();
 		builder.add("username", username);
+		builder.add("power", votingPower);
 		
 		JsonArrayBuilder arrBuilder = Json.createArrayBuilder();
 		for (String i : votedSongs.keySet()) {
