@@ -1,7 +1,8 @@
 package sac.juke;
 
+import java.io.IOException;
+
 import javax.json.Json;
-import javax.json.JsonArray;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 import javax.servlet.ServletContext;
@@ -20,8 +21,12 @@ import javax.ws.rs.core.Response;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.glassfish.jersey.media.sse.EventOutput;
+import org.glassfish.jersey.media.sse.OutboundEvent;
+import org.glassfish.jersey.media.sse.SseFeature;
 
 import sac.juke.exceptions.UserExistsException;
+import sac.juke.model.GlobalData;
 import sac.juke.model.Song;
 import sac.juke.model.User;
 import sac.juke.model.Users;
@@ -43,6 +48,30 @@ public class JukeboxREST {
 	
     public JukeboxREST() {
         super();
+    }
+    
+    @GET
+    @Path("closeSseConn")
+    public String closeSseConn(@QueryParam("username") String username) {
+    	User user = Utils.getUser(servletContext, username);
+    	try {
+			user.getEventOutput().close();
+	    	log.debug("Closed SSE conn for user: " + username);
+    	} catch (IOException e) {
+			log.debug("Exception while closing SSE connection: " + e);
+			log.debug(e.getStackTrace());
+		}
+    	
+    	return "OK\n";
+    }
+    
+    @GET
+    @Path("openSseConn")
+    @Produces(SseFeature.SERVER_SENT_EVENTS)
+    public EventOutput openSseConn(@QueryParam("username") String username) {
+    	log.debug("Registering " + username + " for SSE");
+    	EventOutput e = JukeboxLogic.openSseConn(servletContext, username);
+    	return e;
     }
     
     @POST
@@ -99,17 +128,39 @@ public class JukeboxREST {
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     public JsonObject addUser(@FormParam("username") String username) {
     	log.debug("username: " + username);
-    	Users users = Utils.getUsers(servletContext);
-    	
+    	User user = null;
     	JsonObjectBuilder b = Json.createObjectBuilder();
+
     	try {
-    		users.add(username, new User(username));
+    		user = JukeboxLogic.createUser(servletContext, username);
     		b.add("status", "OK");
+    		
+    		/* send notification to other users */
+        	JukeboxLogic.sendUserNotification(servletContext, user);
     	} catch (UserExistsException e) {
     		log.debug("Users exists");
     		b.add("status", "EXISTS");
     	}
+    	
     	return b.build(); 
+    }
+    
+    @POST
+    @Path("testBcast")
+    @Produces("text/plain")
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    public String testBroadcast(@FormParam("msg") String msg,
+    							@FormParam("id") String id) {
+    	/* Generate event */
+		OutboundEvent.Builder eventBuilder = new OutboundEvent.Builder();
+        eventBuilder.name(id);
+        eventBuilder.data(String.class, msg);
+        OutboundEvent event = eventBuilder.build();
+        
+    	GlobalData data = Utils.getGlobalData(servletContext);
+    	data.broadcast(event);
+    	log.debug("Broadcast: " + id + " - " + msg);
+    	return "OK\n";
     }
     
     @POST
@@ -119,8 +170,11 @@ public class JukeboxREST {
     public String removeUser(@FormParam("username") String username) {
     	log.debug("removing username: " + username);
     	Users users = Utils.getUsers(servletContext);
-    	
+    	User user = users.get(username);
     	users.remove(username);
+    	
+    	/* send notification to other users */
+    	JukeboxLogic.removeUserNotification(servletContext, user);
     	
     	return "OK"; 
     }

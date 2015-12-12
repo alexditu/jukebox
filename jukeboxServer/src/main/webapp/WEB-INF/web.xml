@@ -5,6 +5,7 @@
  
     <servlet>
         <servlet-name>sac.juke.RestApplication</servlet-name>
+        <async-supported>true</async-supported>
     </servlet>
     <servlet-mapping>
         <servlet-name>sac.juke.RestApplication</servlet-name>

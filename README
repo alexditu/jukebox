@@ -28,6 +28,14 @@ Activitati urmatoare:
 	* posibilitatea de "follow" - transfer putere de votare
 * integrare push notifications in aplicatia client
 
+UserExperience:
+* mute button
+* volume slider
+* current seek time
+
+TODO:
+* am implementat trimiterea de notificari (addUser, removeUser) dar trebuie interpretate de client
+
 
 Tools:
 	Eclipse Mars version

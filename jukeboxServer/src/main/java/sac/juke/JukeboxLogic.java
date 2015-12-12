@@ -1,5 +1,6 @@
 package sac.juke;
 
+import java.io.IOException;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Date;
@@ -12,13 +13,18 @@ import javax.servlet.ServletContext;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.glassfish.jersey.media.sse.EventOutput;
+import org.glassfish.jersey.media.sse.OutboundEvent;
 import org.quartz.JobDetail;
 import org.quartz.JobKey;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 
+import sac.juke.exceptions.UserExistsException;
+import sac.juke.model.GlobalData;
 import sac.juke.model.Songs;
 import sac.juke.model.User;
+import sac.juke.model.Users;
 import sac.juke.util.Utils;
 
 public class JukeboxLogic {
@@ -123,5 +129,65 @@ public class JukeboxLogic {
 			
 		return "OK";
 	}
+	
+	/**
+	 * Broadcast to others that a new user has connected.
+	 * Set new user to listen to broadcasts.
+	 * @param ctx
+	 * @param user	new connected user
+	 */
+	public static void sendUserNotification(ServletContext ctx, User user) {
+		
+		/* Generate event */
+		OutboundEvent.Builder eventBuilder = new OutboundEvent.Builder();
+        eventBuilder.name("addUser");
+        eventBuilder.data(String.class, user.getUsername());
+        OutboundEvent event = eventBuilder.build();
+        
+        /* Send notification to all users */
+    	GlobalData data = Utils.getGlobalData(ctx);
+    	data.broadcast(event);
+    	log.debug("Broadcast: " + event.getName() + " - " + event.getData());
+    	
+    	/* register user for broadcasts */
+    	data.addListener(user.getEventOutput());
+	}
+	
+	/**
+	 * Broadcast to others that a user has logged out and close the SSE connection.
+	 * @param ctx
+	 * @param user	the user that logged out
+	 */
+	public static void removeUserNotification(ServletContext ctx, User user) {
+		
+		/* Generate event */
+		OutboundEvent.Builder eventBuilder = new OutboundEvent.Builder();
+        eventBuilder.name("removeUser");
+        eventBuilder.data(String.class, user.getUsername());
+        OutboundEvent event = eventBuilder.build();
+        
+    	GlobalData data = Utils.getGlobalData(ctx);
+    	
+    	/* remove SSE connection */
+    	data.removeListener(user.getEventOutput());
+    	
+    	/* Send notification to all users */
+    	data.broadcast(event);
+    	log.debug("Broadcasted: " + event);
+	}
+	
+	public static User createUser(ServletContext ctx, String username) throws UserExistsException {
+		Users users = Utils.getUsers(ctx);
+		
+		User user = new User(username);
+		users.add(username, user);
+		return user;
+	}
+	
+	public static EventOutput openSseConn(ServletContext ctx, String username) {
+    	User user = Utils.getUser(ctx, username);
+    	return user.getEventOutput();
+	}
+	
 	
 }

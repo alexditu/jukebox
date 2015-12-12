@@ -7,6 +7,7 @@ import org.quartz.Scheduler;
 import sac.juke.model.GlobalData;
 import sac.juke.model.Song;
 import sac.juke.model.Songs;
+import sac.juke.model.User;
 import sac.juke.model.Users;
 
 /**
@@ -21,6 +22,10 @@ public class Utils {
 	
 	public static Users getUsers(ServletContext ctx) {
 		return ((GlobalData)ctx.getAttribute(Constants.DATA)).users;
+	}
+	
+	public static User getUser(ServletContext ctx, String username) {
+		return getUsers(ctx).get(username);
 	}
 	
 	public static GlobalData getGlobalData(ServletContext ctx) {

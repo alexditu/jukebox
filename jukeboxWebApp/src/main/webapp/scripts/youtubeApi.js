@@ -1,6 +1,10 @@
-function testJS() {
-	console.log('Inside testJS');
-}
+/* Load player */
+var tag = document.createElement('script');
+tag.src = "https://www.youtube.com/iframe_api";
+var firstScriptTag = document.getElementsByTagName('script')[0];
+firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+var player;
+
 
 function mute() {
 	  if (player.isMuted() == false) {
@@ -88,7 +92,8 @@ function onYouTubeIframeAPIReady() {
         'onStateChange': onPlayerStateChange
       }
     });
-//    document.getElementById("player").style.visibility = "hidden";
+    document.getElementById("player").style.visibility = "hidden";
+//    hidePlayer();
 }
 
 function onPlayerReady(event) {
@@ -106,6 +111,64 @@ function onPlayerStateChange(event) {
 function hidePlayer() {
 	$('#player').style.visibility = "hidden";
 }
+
+
+
+
+/* Server Sent Events functions */
+var evtSource;
+function openSseConnection(username) {
+	evtSource = new EventSource("/juke/j/rest/openSseConn?username=" + username);
+	console.log('open conn for: ' + username);
+	
+	/* register callback for all messages */
+/*	evtSource.onmessage = function(e) {
+		  console.log('event: ' + e.event);
+	};
+*/
+		
+	evtSource.onopen = function (e) {
+		 console.log("Waiting message..");
+		 console.log(e);
+	};
+	
+	evtSource.onerror = function(e) {
+		  console.log('Error');
+		  alert(e);
+	};
+		
+	evtSource.addEventListener("addUser", addUserCallback, false);
+	evtSource.addEventListener("removeUser", removeUserCallback, false);
+	evtSource.addEventListener("updateSong", updateSongVotesCallback, false);
+	
+//	setTimeout(function(){ console.log('Closing connection'); evtSource.close(); }, 10000);
+}
+
+function closeSseConnection() {
+	console.log('closing sse');
+	evtSource.close();
+}
+
+/* Update connected users */
+function addUserCallback(evt) {
+	console.log('new user: ' + evt.data);
+}
+
+function removeUserCallback(evt) {
+	console.log('remove user: ' + evt.data);
+}
+
+/* Update songs votes */
+function updateSongVotesCallback(evt) {
+	console.log('updateSongVotes: ' + evt.data);
+}
+
+
+
+
+
+
+
 
 
 

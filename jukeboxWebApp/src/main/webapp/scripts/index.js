@@ -8,14 +8,18 @@ document.getElementById("logout").addEventListener("click", function(){ logout()
 $(document).ready(function(){
 
    $("#liveSearch").keyup(function(event){
-        
+	   
     });
 });
 
 function logout() {
     var param = "username=" + username;
-    doPost("removeUser", param, function(result, status, xhr) {});
-    window.location.assign("/web/login.html");
+    doPost("removeUser", param, function(result, status, xhr) {
+    	console.log('logut result: ' + result);
+    	/* must be after function finishes execution otherwise connection is cut */
+    	window.location.assign("/web/login.html");
+    });
+    
 }
 
 function checkSong(author) {
@@ -87,6 +91,7 @@ function loadVariables() {
     displayUserPower();
 
     setCurrentSong();
+    openSseConnection(username);
 }
 
 function setCurrentSong() {

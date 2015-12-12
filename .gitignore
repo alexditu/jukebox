@@ -4,3 +4,5 @@ target/
 *.jar
 *.sh
 jukeboxWebApp/deploy.sh
+deploy.bat
+.DS_Store

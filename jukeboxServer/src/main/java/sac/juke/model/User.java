@@ -8,21 +8,34 @@ import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.glassfish.jersey.media.sse.EventOutput;
+
 @XmlRootElement
 public class User {
 	String username;
 	HashMap<String, Integer> votedSongs;
 	int votingPower;
 	
+	/* SSE connection */
+	EventOutput eventOutput;
+	
 	public User() {
 		this.votedSongs = new HashMap<>();
 		this.votingPower = 100;
+		eventOutput = new EventOutput();
 	}
 	
 	public User(String username) {
 		this();
 		this.username = username;
-		this.votingPower = 100;
+	}
+	
+	public EventOutput getEventOutput() {
+		return eventOutput;
+	}
+
+	public void setEventOutput(EventOutput eventOutput) {
+		this.eventOutput = eventOutput;
 	}
 
 	public String getUsername() {
