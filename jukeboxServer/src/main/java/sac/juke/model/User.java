@@ -9,10 +9,16 @@ import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import org.glassfish.jersey.media.sse.EventOutput;
+
+import sac.juke.JukeboxLogic;
 
 @XmlRootElement
 public class User {
+	private static final Logger log = LogManager.getLogger(JukeboxLogic.class);
 	String username;
 	HashMap<String, Integer> votedSongs;
 	ArrayList<String> followedUsers;
@@ -105,6 +111,7 @@ public class User {
 	}
 	
 	public int getTransferrablePower() {
+		//log.debug("Transferrable power for " + username + "is " + (this.votingPower / this.followedUsers.size()));
 		return this.votingPower / this.followedUsers.size();
 	}
 	

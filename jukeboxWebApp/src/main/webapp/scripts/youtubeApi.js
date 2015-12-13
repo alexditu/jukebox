@@ -140,6 +140,9 @@ function openSseConnection(username) {
 	evtSource.addEventListener("addUser", addUserCallback, false);
 	evtSource.addEventListener("removeUser", removeUserCallback, false);
 	evtSource.addEventListener("updateSong", updateSongVotesCallback, false);
+	evtSource.addEventListener("changeSong", updateCurrentSong, false);
+	evtSource.addEventListener("updatePower", updatePower, false);
+
 	
 //	setTimeout(function(){ console.log('Closing connection'); evtSource.close(); }, 10000);
 }
@@ -151,15 +154,30 @@ function closeSseConnection() {
 
 /* Update connected users */
 function addUserCallback(evt) {
+	displayUsers();
 	console.log('new user: ' + evt.data);
 }
 
+/* update current song */
+function updateCurrentSong(evt) {
+	setCurrentSong();
+	displayUserPower()
+}
+
+/* update power */
+function updateCPower(evt) {
+	displayUserPower()
+}
+
 function removeUserCallback(evt) {
+	displayUsers();
+	displaySongs(scenario_var);
 	console.log('remove user: ' + evt.data);
 }
 
 /* Update songs votes */
 function updateSongVotesCallback(evt) {
+	displaySongs(scenario_var);
 	console.log('updateSongVotes: ' + evt.data);
 }
 

@@ -87,7 +87,6 @@ public class Users {
 		}
 		for (String u : this.getUsersKeySet()) {
 			User currentUser = this.get(u);
-			currentUser.setVotingPower(currentUser.getBasePower());
 			if (currentUser.getVotedSongs().isEmpty()) {
 				for (String followed : currentUser.getFollowedUsers()) {
 					User followedUser = this.get(followed);

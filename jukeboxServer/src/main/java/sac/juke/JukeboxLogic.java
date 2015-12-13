@@ -158,7 +158,10 @@ public class JukeboxLogic {
 		
 		Utils.getUsers(ctx).updateState();
 		Utils.getSongs(ctx).update(Utils.getUsers(ctx));
-			
+		
+		/* send notification to other users */
+    	updateSongNotification(ctx);
+		
 		return "OK";
 	}
 	
@@ -186,6 +189,46 @@ public class JukeboxLogic {
 	}
 	
 	/**
+	 * Broadcast to others that the current song has changed
+	 * Set new user to listen to broadcasts.
+	 * @param ctx
+	 * @param
+	 */
+	public static void newSongNotification(ServletContext ctx, String song) {
+		
+		/* Generate event */
+		OutboundEvent.Builder eventBuilder = new OutboundEvent.Builder();
+        eventBuilder.name("changeSong");
+        eventBuilder.data(String.class, song);
+        OutboundEvent event = eventBuilder.build();
+        
+        /* Send notification to all users */
+    	GlobalData data = Utils.getGlobalData(ctx);
+    	data.broadcast(event);
+    	log.debug("Broadcast: " + event.getName() + " - " + event.getData());
+	}
+	
+	/**
+	 * Broadcast to others that the power has changed
+	 * Set new user to listen to broadcasts.
+	 * @param ctx
+	 * @param
+	 */
+	public static void updatePowerNotification(ServletContext ctx) {
+		
+		/* Generate event */
+		OutboundEvent.Builder eventBuilder = new OutboundEvent.Builder();
+        eventBuilder.name("updatePower");
+        eventBuilder.data(String.class, "Updating power");
+        OutboundEvent event = eventBuilder.build();
+        
+        /* Send notification to all users */
+    	GlobalData data = Utils.getGlobalData(ctx);
+    	data.broadcast(event);
+    	log.debug("Broadcast: " + event.getName());
+	}
+	
+	/**
 	 * Broadcast to others that a user has logged out and close the SSE connection.
 	 * @param ctx
 	 * @param user	the user that logged out
@@ -202,6 +245,25 @@ public class JukeboxLogic {
     	
     	/* remove SSE connection */
     	data.removeListener(user.getEventOutput());
+    	
+    	/* Send notification to all users */
+    	data.broadcast(event);
+    	log.debug("Broadcasted: " + event);
+	}
+	
+	/**
+	 * Broadcast to others that a song has changed its parameters
+	 * @param user	the user that logged out
+	 */
+	public static void updateSongNotification(ServletContext ctx) {
+		
+		/* Generate event */
+		OutboundEvent.Builder eventBuilder = new OutboundEvent.Builder();
+        eventBuilder.name("updateSong");
+        eventBuilder.data(String.class, "Updating song list");
+        OutboundEvent event = eventBuilder.build();
+        
+    	GlobalData data = Utils.getGlobalData(ctx);
     	
     	/* Send notification to all users */
     	data.broadcast(event);

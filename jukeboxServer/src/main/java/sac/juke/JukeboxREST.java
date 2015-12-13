@@ -187,7 +187,7 @@ public class JukeboxREST {
     @Path("followUser")
     @Produces("text/plain")
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-    public String removeUser(@FormParam("username") String username,
+    public String followUser(@FormParam("username") String username,
     						 @FormParam("followedUser") String followed) {
     	if (username.equals(followed)) {
     		return "unfollow";
@@ -200,6 +200,9 @@ public class JukeboxREST {
     	users.follow(username, followed);
     	users.updateState();
     	songs.update(users);
+    	
+    	/* send notification to other users */
+    	JukeboxLogic.updatePowerNotification(servletContext);
     	
     	if (users.get(username).follows(followed)) {
     		return "follow";

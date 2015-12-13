@@ -1,4 +1,4 @@
-var username, songList;
+var username, songList, scenario;
 window.onload = loadVariables;
 document.getElementById("tab_recent").addEventListener("click", function(){ displaySongs("recent"); });
 document.getElementById("tab_trending").addEventListener("click", function(){ displaySongs("trending"); });
@@ -30,6 +30,7 @@ function checkSong(author) {
 function displaySongs(scenario) {
     var param = "username=" + username;
 
+    scenario_var = scenario;
     //console.log("Here " + scenario);
 
     doPost('getSongs', param, function(result, status, xhr) {
