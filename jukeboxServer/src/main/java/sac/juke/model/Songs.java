@@ -54,6 +54,16 @@ public class Songs {
 		}
 	}
 	
+	public synchronized void update(Users users) {
+		for (String u : users.getUsersKeySet()) {
+			User currentUser = users.get(u);
+			HashMap<String, Integer> votedSongs = currentUser.getVotedSongs();
+			for(String songId : votedSongs.keySet()) {
+				this.songs.get(songId).update(u, votedSongs.get(songId));
+			}
+		}
+	}
+	
 	public synchronized void vote(String id, User u) {
 		HashMap<String, Integer> votedSongs = u.getVotedSongs();
 		for(String songId : votedSongs.keySet()) {

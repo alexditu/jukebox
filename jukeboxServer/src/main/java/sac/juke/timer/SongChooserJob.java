@@ -97,6 +97,7 @@ public class SongChooserJob implements Job {
 	private void updateServerState(Songs songs, Users users, Song nextSong) {
 		users.updateVotingPower(nextSong.getId());
 		users.flushVotedSongs();
+		users.updateState();
 		songs.flushSongVotes();
 	}
 	

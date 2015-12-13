@@ -17,6 +17,7 @@ public class User {
 	HashMap<String, Integer> votedSongs;
 	ArrayList<String> followedUsers;
 	int votingPower;
+	int basePower;
 	
 	/* SSE connection */
 	EventOutput eventOutput;
@@ -25,6 +26,7 @@ public class User {
 		this.votedSongs = new HashMap<>();
 		this.followedUsers = new ArrayList<>();
 		this.votingPower = 100;
+		this.basePower = 100;
 		eventOutput = new EventOutput();
 	}
 	
@@ -69,6 +71,15 @@ public class User {
 		return this.votedSongs;
 	}
 	
+	public void updateVotedSongs() {
+		if (!this.votedSongs.isEmpty()) {
+			int score = this.votingPower / this.votedSongs.size();
+			for (String key : this.votedSongs.keySet()) {
+				this.votedSongs.put(key, score);
+			}
+		}
+	}
+	
 	public void vote(String id) {
 		int newScore = this.votingPower / (this.votedSongs.size() + 1);
 		this.votedSongs.put(id, newScore);
@@ -91,6 +102,22 @@ public class User {
 	
 	public int getVotingPower() {
 		return this.votingPower;
+	}
+	
+	public int getTransferrablePower() {
+		return this.votingPower / this.followedUsers.size();
+	}
+	
+	public int getBasePower() {
+		return this.basePower;
+	}
+	
+	public void setBasePower(int value) {
+		this.basePower = value;
+	}
+	
+	public ArrayList<String> getFollowedUsers() {
+		return this.followedUsers;
 	}
 	
 	public void setVotingPower(int power) {

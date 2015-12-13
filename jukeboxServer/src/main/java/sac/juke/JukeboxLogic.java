@@ -155,6 +155,9 @@ public class JukeboxLogic {
 				songs.vote(id, user);
 			}
 		}
+		
+		Utils.getUsers(ctx).updateState();
+		Utils.getSongs(ctx).update(Utils.getUsers(ctx));
 			
 		return "OK";
 	}

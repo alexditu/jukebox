@@ -28,6 +28,7 @@ import org.glassfish.jersey.media.sse.SseFeature;
 import sac.juke.exceptions.UserExistsException;
 import sac.juke.model.GlobalData;
 import sac.juke.model.Song;
+import sac.juke.model.Songs;
 import sac.juke.model.User;
 import sac.juke.model.Users;
 import sac.juke.util.Utils;
@@ -191,11 +192,13 @@ public class JukeboxREST {
     	
     	log.debug("Following username: " + followed);
     	Users users = Utils.getUsers(servletContext);
-    	User user = users.get(username);
+    	Songs songs = Utils.getSongs(servletContext);
     	
-    	user.followUser(followed);
+    	users.follow(username, followed);
+    	users.updateState();
+    	songs.update(users);
     	
-    	if (user.follows(followed)) {
+    	if (users.get(username).follows(followed)) {
     		return "follow";
     	} else {
     		return "unfollow";

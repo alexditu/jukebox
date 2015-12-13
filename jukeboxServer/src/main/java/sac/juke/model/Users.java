@@ -73,6 +73,38 @@ public class Users {
 		return sb.toString();
 	}
 	
+	public synchronized void follow(String from, String to) {
+		User source = this.get(from);
+		
+		source.followUser(to);
+	}
+	
+	public synchronized void updateState() {
+		/* update voting power */
+		for (String u : this.getUsersKeySet()) {
+			User currentUser = this.get(u);
+			currentUser.setVotingPower(currentUser.getBasePower());
+		}
+		for (String u : this.getUsersKeySet()) {
+			User currentUser = this.get(u);
+			currentUser.setVotingPower(currentUser.getBasePower());
+			if (currentUser.getVotedSongs().isEmpty()) {
+				for (String followed : currentUser.getFollowedUsers()) {
+					log.debug("Updating " + u + "with " + followed);
+					User followedUser = this.get(followed);
+					followedUser.setVotingPower(followedUser.getVotingPower() + 
+												currentUser.getTransferrablePower());
+				}
+			}
+		}
+		
+		/* update song scores */
+		for (String u : this.getUsersKeySet()) {
+			User currentUser = this.get(u);
+			currentUser.updateVotedSongs();
+		}
+	}
+	
 	public void flushVotedSongs() {
 		for (User u : users.values()) {
 			u.flushSongs();
@@ -83,14 +115,14 @@ public class Users {
 		for (User u : users.values()) {
 			HashMap<String, Integer> votedSongs = u.getVotedSongs();
 			if (votedSongs.containsKey(nextSong)) {
-				int power = u.getVotingPower();
+				int power = u.getBasePower();
 				if (power >= 10) {
-					u.setVotingPower(power - 10);
+					u.setBasePower(power - 10);
 				}
 			} else {
 				int power = u.getVotingPower();
 				if (power <= 90) {
-					u.setVotingPower(power + 10);
+					u.setBasePower(power + 10);
 				}
 			}
 		}
