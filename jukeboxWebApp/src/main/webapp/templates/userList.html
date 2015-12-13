@@ -1,3 +1,13 @@
 {{#users}}
-<a href="#" class="list-group-item">{{username}}</a>
+<li class="list-group-item">
+    {{username}}
+    <a href="#" class="btn btn-primary btn-xs" style="float:right" id="{{username}}" onclick='follow("{{username}}");'>
+    	{{#followed}}
+            Unfollow
+        {{/followed}}
+        {{^followed}}
+            Follow
+        {{/followed}}
+    </a>
+</li>
 {{/users}}

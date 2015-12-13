@@ -75,7 +75,6 @@ public class JukeboxLogic {
 		Songs songs = Utils.getSongs(ctx);
 		User user = Utils.getUsers(ctx).get(username);
 		
-		
 		if (user == null) {
 			/* should not get here */
 			log.debug("Error: user not found: " + username);
@@ -91,6 +90,36 @@ public class JukeboxLogic {
 		
 		JsonObjectBuilder ret = Json.createObjectBuilder();
 		ret.add("songs", arr.build());
+		
+		return ret.build();
+	}
+	
+	/**
+	 * Returns the list with all songs and sets the voted flag for each one if user has voted that
+	 * song
+	 * @param ctx
+	 * @param username
+	 * @return			{"songs": [song1, song2, ...]}
+	 */
+	public static JsonObject getUsersForUser(ServletContext ctx, String username) {
+		Users users = Utils.getUsers(ctx);
+		User user = Utils.getUsers(ctx).get(username);
+		
+		if (user == null) {
+			/* should not get here */
+			log.debug("Error: user not found: " + username);
+			return Json.createObjectBuilder().build();
+		}
+		
+		JsonArrayBuilder arr = Json.createArrayBuilder();
+		for (String i : users.getUsersKeySet()) {
+			JsonObjectBuilder userInfo = users.get(i).toJsonBuilder();
+			userInfo.add("followed", user.follows(i));
+			arr.add(userInfo.build());
+		}
+		
+		JsonObjectBuilder ret = Json.createObjectBuilder();
+		ret.add("users", arr.build());
 		
 		return ret.build();
 	}

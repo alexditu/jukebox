@@ -64,12 +64,27 @@ function displaySongs(scenario) {
 }
 
 function displayUsers() {
-    doPost('getUsers', "", function(result, status, xhr) {
+    params = "username=" + username;
+
+    doPost('getUsers', params, function(result, status, xhr) {
         $.get('templates/userList.html', function(template) {
             result = JSON.parse(result);
             var rendered = Mustache.render(template, result);
             $('#activeUsers').html(rendered);
         });
+    });
+}
+
+function follow(user) {
+    console.log(user);
+    params = "username=" + username + "&followedUser=" + user;
+    doPost('followUser', params, function(result, status, xhr) {
+        result = String(result);
+        if (result == "follow") {
+            document.getElementById(user).innerHTML = "Unfollow";
+        } else {
+            document.getElementById(user).innerHTML = "Follow";
+        }
     });
 }
 

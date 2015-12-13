@@ -180,6 +180,29 @@ public class JukeboxREST {
     }
     
     @POST
+    @Path("followUser")
+    @Produces("text/plain")
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    public String removeUser(@FormParam("username") String username,
+    						 @FormParam("followedUser") String followed) {
+    	if (username.equals(followed)) {
+    		return "unfollow";
+    	}
+    	
+    	log.debug("Following username: " + followed);
+    	Users users = Utils.getUsers(servletContext);
+    	User user = users.get(username);
+    	
+    	user.followUser(followed);
+    	
+    	if (user.follows(followed)) {
+    		return "follow";
+    	} else {
+    		return "unfollow";
+    	}
+    }
+    
+    @POST
     @Path("getPower")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
@@ -198,12 +221,9 @@ public class JukeboxREST {
     @POST
     @Path("getUsers")
     @Produces(MediaType.APPLICATION_JSON)
-    @Consumes(MediaType.WILDCARD)
-    public JsonObject getUsers() { 
-    	Users users = Utils.getUsers(servletContext);
-    	log.debug("users: " + users.toString());    	
-//    	response.addHeader("Access-Control-Allow-Origin", "*");
-    	return users.toJson();
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    public JsonObject getUsers(@FormParam("username") String username) { 
+    	return JukeboxLogic.getUsersForUser(servletContext, username);
     }
     
     

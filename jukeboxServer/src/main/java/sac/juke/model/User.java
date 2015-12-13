@@ -1,5 +1,6 @@
 package sac.juke.model;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.json.Json;
@@ -14,6 +15,7 @@ import org.glassfish.jersey.media.sse.EventOutput;
 public class User {
 	String username;
 	HashMap<String, Integer> votedSongs;
+	ArrayList<String> followedUsers;
 	int votingPower;
 	
 	/* SSE connection */
@@ -21,6 +23,7 @@ public class User {
 	
 	public User() {
 		this.votedSongs = new HashMap<>();
+		this.followedUsers = new ArrayList<>();
 		this.votingPower = 100;
 		eventOutput = new EventOutput();
 	}
@@ -36,6 +39,18 @@ public class User {
 
 	public void setEventOutput(EventOutput eventOutput) {
 		this.eventOutput = eventOutput;
+	}
+	
+	public boolean follows(String user) {
+		return this.followedUsers.contains(user);
+	}
+	
+	public void followUser(String user) {
+		if (this.followedUsers.contains(user)) {
+			this.followedUsers.remove(user);
+		} else {
+			this.followedUsers.add(user);
+		}
 	}
 
 	public String getUsername() {
@@ -106,5 +121,15 @@ public class User {
 		builder.add("votedSongs", arrBuilder.build());
 		
 		return builder.build();
+	}
+	
+	/**
+	 * Useful for adding extra info without altering the class
+	 * @return
+	 */
+	public JsonObjectBuilder toJsonBuilder() {
+		JsonObjectBuilder builder = Json.createObjectBuilder();
+		builder .add("username", username);
+		return builder;
 	}
 }

@@ -1,6 +1,7 @@
 package sac.juke.model;
 
 import java.util.HashMap;
+import java.util.Set;
 
 import javax.json.Json;
 import javax.json.JsonArrayBuilder;
@@ -38,6 +39,10 @@ public class Users {
 	
 	public synchronized User get(String userId) {
 		return users.get(userId);
+	}
+	
+	public synchronized Set<String> getUsersKeySet() {
+		return this.users.keySet();
 	}
 	
 	public synchronized void add(String userId, User user) throws UserExistsException {
