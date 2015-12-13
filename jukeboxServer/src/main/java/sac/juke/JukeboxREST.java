@@ -171,7 +171,10 @@ public class JukeboxREST {
     public String removeUser(@FormParam("username") String username) {
     	log.debug("removing username: " + username);
     	Users users = Utils.getUsers(servletContext);
+    	Songs songs = Utils.getSongs(servletContext);
     	User user = users.get(username);
+    	
+    	songs.removeUser(user);
     	users.remove(username);
     	
     	/* send notification to other users */

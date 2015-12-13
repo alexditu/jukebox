@@ -90,10 +90,11 @@ public class Users {
 			currentUser.setVotingPower(currentUser.getBasePower());
 			if (currentUser.getVotedSongs().isEmpty()) {
 				for (String followed : currentUser.getFollowedUsers()) {
-					log.debug("Updating " + u + "with " + followed);
 					User followedUser = this.get(followed);
-					followedUser.setVotingPower(followedUser.getVotingPower() + 
-												currentUser.getTransferrablePower());
+					if (followedUser != null) {
+						followedUser.setVotingPower(followedUser.getVotingPower() + 
+													currentUser.getTransferrablePower());
+					}
 				}
 			}
 		}

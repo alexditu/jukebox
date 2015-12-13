@@ -54,6 +54,13 @@ public class Songs {
 		}
 	}
 	
+	public void removeUser(User u) {
+		HashMap<String, Integer> votedSongs = u.getVotedSongs();
+		for(String songId : votedSongs.keySet()) {
+			this.songs.get(songId).update(u.getUsername(), 0);
+		}
+	}
+	
 	public synchronized void update(Users users) {
 		for (String u : users.getUsersKeySet()) {
 			User currentUser = users.get(u);
