@@ -113,6 +113,27 @@ public class Songs {
 	public void addDefaultSongs() {
 		addSong("ZtFUX4Y2U84", new Song("ZtFUX4Y2U84", 5 * 60 + 21, 0, "Joe Cocker", "Unchain my heart"));
 		addSong("d27gTrPPAyk", new Song("d27gTrPPAyk", 4 * 60 + 27, 0, "Sting", "Englishman in New York"));
-		addSong("Q_L-0Ryhmic", new Song("Q_L-0Ryhmic", 4 * 60 + 46, 0, "Eric Clapton", "Layla"));
+		addSong("Q_L-0Ryhmic", new Song("Q_L-0Ryhmic", 4 * 60 + 46, 0, "Eric Clapton", "Layla"));		
+		addSong("Z1dIRjazpBw", new Song("Z1dIRjazpBw", 4 * 60 + 12, 0, "Soha", "Mil Pasos"));
+		addSong("IEVow6kr5nI", new Song("IEVow6kr5nI", 6 * 60 + 6, 0, "Leonard Cohen", "Dance me to the end of love"));		
+		addSong("Lle_GA1cg20", new Song("Lle_GA1cg20", 2 * 60 + 54, 0, "Pink Martini", "Je ne veux pas travailler"));
+		addSong("8IJzYAda1wA", new Song("8IJzYAda1wA", 3 * 60 + 25, 0, "Louis Armstrong", "La vie en rose"));
+		addSong("CHekNnySAfM", new Song("CHekNnySAfM", 3 * 60 + 56, 0, "Bob Marley", "Is this love"));		
+		addSong("vdB-8eLEW8g", new Song("vdB-8eLEW8g", 2 * 60 + 45, 0, "Bob Marley", "One love"));		
+		addSong("L3HQMbQAWRc", new Song("L3HQMbQAWRc", 4 * 60 + 49, 0, "Bob Marley", "Don't worry be happy"));
+		addSong("tzkG6Xu6lUE", new Song("tzkG6Xu6lUE", 7 * 60 + 12, 0, "Bob Marley", "No woman, no cry"));
+		
+		addSong("W7tdPoRLDtc", new Song("W7tdPoRLDtc", 0 * 60 + 30, 0, "Sue Paparude", "Pentru inimi"));
+		addSong("fkhH9b-7R-4", new Song("fkhH9b-7R-4", 0 * 60 + 25, 0, "Sue Paparude", "A fost o data"));
+		addSong("YTPp-n7XgGE", new Song("YTPp-n7XgGE", 7 * 60 + 12, 0, "El Negro", "Ploaia"));
+		
+		
 	}
 }
+
+
+
+
+
+
+
