@@ -122,11 +122,15 @@ public class Songs {
 		addSong("vdB-8eLEW8g", new Song("vdB-8eLEW8g", 2 * 60 + 45, 0, "Bob Marley", "One love"));		
 		addSong("L3HQMbQAWRc", new Song("L3HQMbQAWRc", 4 * 60 + 49, 0, "Bob Marley", "Don't worry be happy"));
 		addSong("tzkG6Xu6lUE", new Song("tzkG6Xu6lUE", 7 * 60 + 12, 0, "Bob Marley", "No woman, no cry"));
-		
 		addSong("W7tdPoRLDtc", new Song("W7tdPoRLDtc", 0 * 60 + 30, 0, "Sue Paparude", "Pentru inimi"));
 		addSong("fkhH9b-7R-4", new Song("fkhH9b-7R-4", 0 * 60 + 25, 0, "Sue Paparude", "A fost o data"));
 		addSong("YTPp-n7XgGE", new Song("YTPp-n7XgGE", 7 * 60 + 12, 0, "El Negro", "Ploaia"));
 		
+		addSong("tzEZntbH2zw", new Song("tzEZntbH2zw", 0 * 60 + 22, 0, "Demo", "Short song 1"));
+		addSong("tzEZntbH2zw", new Song("tzEZntbH2zw", 0 * 60 + 22, 0, "Demo", "Short song 2"));
+		addSong("tzEZntbH2zw", new Song("tzEZntbH2zw", 0 * 60 + 22, 0, "Demo", "Short song 3"));
+		addSong("XxWTmw9MkzE", new Song("XxWTmw9MkzE", 0 * 60 + 20, 0, "Demo", "Short song 4"));
+		addSong("XxWTmw9MkzE", new Song("XxWTmw9MkzE", 0 * 60 + 20, 0, "Demo", "Short song 5"));
 		
 	}
 }
