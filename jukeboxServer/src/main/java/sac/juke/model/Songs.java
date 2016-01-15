@@ -1,7 +1,9 @@
 package sac.juke.model;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.Random;
 import java.util.Set;
 
 import org.apache.logging.log4j.LogManager;
@@ -107,6 +109,16 @@ public class Songs {
 			}
 		}
 		
+		if (maxScore == 0) {
+			log.debug("No song was votted, choosing random");
+			Collection<Song> c = songs.values();
+			Song songsArray[] = c.toArray(new Song[] {});
+			
+			int r = new Random(System.nanoTime()).nextInt(songsArray.length);
+			nextSong = songsArray[r];
+			log.debug("Random song choosed: " + nextSong.toString());
+		}
+		
 		return nextSong;
 	}
 	
@@ -127,10 +139,17 @@ public class Songs {
 		addSong("YTPp-n7XgGE", new Song("YTPp-n7XgGE", 7 * 60 + 12, 0, "El Negro", "Ploaia"));
 		
 		addSong("tzEZntbH2zw", new Song("tzEZntbH2zw", 0 * 60 + 22, 0, "Demo", "Short song 1"));
-		addSong("tzEZntbH2zw", new Song("tzEZntbH2zw", 0 * 60 + 22, 0, "Demo", "Short song 2"));
-		addSong("tzEZntbH2zw", new Song("tzEZntbH2zw", 0 * 60 + 22, 0, "Demo", "Short song 3"));
-		addSong("XxWTmw9MkzE", new Song("XxWTmw9MkzE", 0 * 60 + 20, 0, "Demo", "Short song 4"));
-		addSong("XxWTmw9MkzE", new Song("XxWTmw9MkzE", 0 * 60 + 20, 0, "Demo", "Short song 5"));
+		addSong("XxWTmw9MkzE", new Song("XxWTmw9MkzE", 0 * 60 + 20, 0, "Demo", "Short song 2"));		
+		addSong("t-Z4m1BONbM", new Song("t-Z4m1BONbM", 0 * 60 + 18, 0, "Demo", "Short song 3"));		
+		addSong("dcEDqx-CEcY", new Song("dcEDqx-CEcY", 0 * 60 + 7, 0, "Demo", "Short song 4"));
+		
+		addSong("ytDuslteiyU", new Song("ytDuslteiyU", 0 * 60 + 11, 0, "Demo", "Short song 5"));
+		
+		addSong("jHGKM-gTioY", new Song("jHGKM-gTioY", 0 * 60 + 19, 0, "Demo", "Short song 6"));
+		addSong("WUzthVZfmHA", new Song("WUzthVZfmHA", 0 * 60 + 3, 0, "Demo", "Short song 7 [Sparta]"));
+		addSong("7SVpOeiqiRI", new Song("7SVpOeiqiRI", 1 * 60 + 52, 0, "Demo", "Short song 8"));
+		
+		
 		
 	}
 }

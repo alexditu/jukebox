@@ -21,6 +21,7 @@ import org.quartz.Trigger;
 import org.quartz.TriggerBuilder;
 import org.quartz.impl.StdSchedulerFactory;
 
+import sac.juke.model.GlobalData;
 import sac.juke.model.Song;
 import sac.juke.model.Songs;
 import sac.juke.util.Constants;
@@ -40,7 +41,8 @@ public class SongScheduler {
             scheduler.start();
             
             //TODO: trebuie aleasa cumva prima melodie
-            String firstSongId = "vdB-8eLEW8g";
+            String firstSongId = "tzEZntbH2zw";
+            ((GlobalData)context.getAttribute(Constants.DATA)).setCurrentSong(firstSongId);
             
             Songs songList = Utils.getSongs(context);
             Song firstSong = songList.getSong(firstSongId);
