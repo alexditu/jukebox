@@ -87,6 +87,7 @@ function follow(user) {
             document.getElementById(user).innerHTML = "Follow";
         }
     });
+    displaySongs(scenario_var);
 }
 
 function displayUserPower() {

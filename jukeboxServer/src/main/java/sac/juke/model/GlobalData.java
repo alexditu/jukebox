@@ -7,7 +7,7 @@ import org.glassfish.jersey.media.sse.OutboundEvent;
 import org.glassfish.jersey.media.sse.SseBroadcaster;
 
 public class GlobalData {
-	public String currentSong = "ZtFUX4Y2U84";
+	public String currentSong = "vdB-8eLEW8g";
 	public Songs songs;
 	public Users users;
 	public SseBroadcaster broadcaster;

@@ -21,4 +21,6 @@ public class RestApplication extends Application {
 	    singletons.add(new SseFeature());
 	    return singletons;
 	}
+    
+    
 }

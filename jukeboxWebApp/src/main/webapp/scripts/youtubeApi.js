@@ -79,6 +79,8 @@ function doPost(methodName, data, succesCallBack) {
 function loadSongCallback(result, status, xhr) {
 	var song = JSON.parse(result);
 	player.loadVideoById({'videoId': song.id, 'startSeconds': song.seekTime});
+	document.getElementById("currentSong").innerHTML = "Now playing:    " + song.artist + " - " + song.name;
+	displaySongs(scenario_var);
 }
 
 /* first function called by YT API, inits the player */
@@ -161,12 +163,12 @@ function addUserCallback(evt) {
 /* update current song */
 function updateCurrentSong(evt) {
 	setCurrentSong();
-	displayUserPower()
+	displayUserPower();
 }
 
 /* update power */
 function updateCPower(evt) {
-	displayUserPower()
+	displayUserPower();
 }
 
 function removeUserCallback(evt) {

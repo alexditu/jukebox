@@ -40,7 +40,7 @@ public class SongScheduler {
             scheduler.start();
             
             //TODO: trebuie aleasa cumva prima melodie
-            String firstSongId = "ZtFUX4Y2U84";
+            String firstSongId = "vdB-8eLEW8g";
             
             Songs songList = Utils.getSongs(context);
             Song firstSong = songList.getSong(firstSongId);
