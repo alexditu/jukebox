@@ -146,8 +146,7 @@ public class Songs {
 		addSong("ytDuslteiyU", new Song("ytDuslteiyU", 0 * 60 + 11, 0, "Demo", "Short song 5"));
 		
 		addSong("jHGKM-gTioY", new Song("jHGKM-gTioY", 0 * 60 + 19, 0, "Demo", "Short song 6"));
-		addSong("WUzthVZfmHA", new Song("WUzthVZfmHA", 0 * 60 + 3, 0, "Demo", "Short song 7 [Sparta]"));
-		addSong("7SVpOeiqiRI", new Song("7SVpOeiqiRI", 1 * 60 + 52, 0, "Demo", "Short song 8"));
+		addSong("7SVpOeiqiRI", new Song("7SVpOeiqiRI", 1 * 60 + 52, 0, "Demo", "Short song 7"));
 		
 		
 		
