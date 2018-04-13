@@ -60,9 +60,9 @@ Glassfish 4.1.1:
 
 	- deploy to server:
 		1. Create passfile with content:
-			 S_ADMIN_PASSWORD=weblogic1
+			 AS_ADMIN_PASSWORD=weblogic1
 
-			echo "S_ADMIN_PASSWORD=weblogic1" > /opt/glassfish4/passfile
+			echo "AS_ADMIN_PASSWORD=weblogic1" > /opt/glassfish4/passfile
 
 		2. Deploy to server:
 		asadmin --user admin \
